@@ -54,8 +54,17 @@ npm install
 
 (This tutorial assumes the use of `npm`, but the equivalent `yarn` commands will work as well.)
 
+## Step 2. Create a Chatkit instance
 
-## Step 2. Setup the server
+Like I illustrated earlier, all chat data is sent through and managed by a _Chatkit instance_.
+
+To create a Chatkit instance, head to the dashboard, hit **Create new**, then give your instance a name. I will call mine “React Chat Tutorial”:
+
+In the Keys tab, take note of the **Instance Locator** and **Keys**. We'll need these both in the next section.
+
+
+
+## Step 3. Setup the server
 
 While _most_ interactions will happen on the client, Chatkit also needs a server component to create and manage users securely:
 
@@ -122,4 +131,107 @@ There's a lot to unpack here, starting from the top:
 * First, import `pusher-chatkit-server`
 * Then, instantiate a `chatkit` instance using your unique **Insance Locator** and **Key** 
 * Before a user can connect to Chatkit, a Chatkit user must be created. In the `/users` route, take a `username` and create a Chatkit user. We'll call this route directly from React in an upcoming step.
-* Authentication is the action of proving a user is who she says she is. When someone first connects to Chatkit, a request will be sent to `/authenticate` to authenticate her. The server needs to respond with a token (returned by `chatkit.authenticate`) _if_ the user is valid. In our case, we are going to assume everyone is who they say they are and return a token from `chatkit.authenticate` no matter what. 
+* Authentication is the action of proving a user is who she says she is. When someone first connects to Chatkit, a request will be sent to `/authenticate` to authenticate her. The server needs to respond with a token (returned by `chatkit.authenticate`) _if_ the user is valid. In our case, we are going to assume everyone is who they say they are and return a token from `chatkit.authenticate` no matter what.
+
+That is all we need tod o on the server. Let's move on to the React client.
+
+## Step 4. Login 
+
+When someone loasds the app we want to ask them who they are:
+
+Once they hit Submit we will send their username to the server to createa a Chatkit user if one doesn't exist. 
+
+To collect their username, createa UsernameForm in src/components:
+
+```diff
++import React, { Component } from 'react'
+
++class UsernameForm extends Component {
++ constructor(props) {
++   super(props)
++   this.state = {
++     username: '',
++   }
++   this.onSubmit = this.onSubmit.bind(this)
++   this.onChange = this.onChange.bind(this)
++ }
+
++ onSubmit(e) {
++   e.preventDefault()
++   this.props.onSubmit(this.state.username)
++ }
+
++ onChange(e) {
++    this.setState({ username: e.target.value })
++  }
++
++  render() {
++    return (
++      <div>
++        <div>
++          <h2>What is your usernane?</h2>
++          <form onSubmit={this.onSubmit}>
++            <input
++              type="text"
++              placeholder="Your full name"
++              onChange={this.onChange}
++            />
++            <input type="submit" />
++          </form>
++        </div>
++      </div>
++    )
++  }
++}
++
++ export default UsernameForm
+```
+
+Then, update App.js:
+
+```diff
+import React, { Component } from 'react'
++import UsernameForm from './components/UsernameForm'
+
+class App extends Component {
+  constructor() {
+    super()
++    this.state = {
++      currentScreen: 'WhatIsYourUsernameScreen',
++      currentUsername: '',
++    }
++    this.onUsernameSubmitted = this.onUsernameSubmitted.bind(this)
+  }
+
++  onUsernameSubmitted(username) {
++    fetch('http://localhost:3001/users', {
++      method: 'POST',
++      headers: {
++        'Content-Type': 'application/json',
++      },
++      body: JSON.stringify({ username }),
++    })
++      .then(response => {
++        this.setState({
++          userId: username,
++          currentScreen: 'ChatScreen',
++        })
++      })
++      .catch(error => console.error('error', error))
++  }
+
+  render() {
+-     return <h1>Chat</h1>
++    if (this.state.currentScreen === 'WhatIsYourUsernameScreen') {
++      return <UsernameForm onSubmit={this.onUsernameSubmitted} />
++    }
+  }
+}
++
+export default App
+```
+
+
+
+
+
