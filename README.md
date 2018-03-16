@@ -2,13 +2,13 @@
 
 ## Introduction
 
-In this tutorial, you’ll learn how to build a chat app with React and [Pusher Chatkit](https://pusher.com/chatkit). When we're done we'll have a chat, complete with **Typing indicators**, **"Who's online"** list and **message retention**: 
+In this tutorial, you’ll learn how to build a chat app with React and [Pusher Chatkit](https://pusher.com/chatkit). When we're done we'll have a chat complete with **Typing indicators**, a **"Who's online" list** and **message history**: 
 
 <ANIMATION OF FINAL DEMO>
   
   
 
-If you think this sounds like al ot to tackle in one tutorial, you would normally be right. However, because we're going to be using Chatkit, we can more or less focus exclusively on the UI code while Chatkit does all the heavy lifting.
+If you think this sounds like a lot to tackle in one tutorial... You would normally be right. However, because we're going to be using Chatkit, we can focus on the UI code while Chatkit does the heavy lifting. 
 
 
 ## "What is Chatkit?"
