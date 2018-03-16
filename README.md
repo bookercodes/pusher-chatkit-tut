@@ -21,9 +21,8 @@ const cors = require('cors')
 const app = express()
 
 +const chatkit = new Chatkit.default({
-+  instanceLocator: 'v1:us1:542391ba-ff28-4674-a4ad-a464fd59f9f6',
-+  key:
-+    'c79c6866-4b06-4848-aca8-56d97a69d3a3:NCebZUHExpE1dhRCYIusaS6yuvYO1au7grCbFuA0oA8=',
++  instanceLocator: 'YOUR INSTANCE LOCATOR',
++  key: 'YOUR KEY',
 + })
 
 app.use(bodyParser.urlencoded({ extended: false }))
