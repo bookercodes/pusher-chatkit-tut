@@ -56,7 +56,7 @@ npm install
 
 ## Setting up the server
 
-While _most_ interactions will happen on the client, Chatkit also needs a server component to create and manage users:
+While _most_ interactions will happen on the client, Chatkit also needs a server component to create and manage users securely:
 
 ![](https://i.imgur.com/9elZ5SQ.jpg)
 
@@ -87,11 +87,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cors())
 
-+app.post('/authenticate', (req, res) => {
-+  const grant_type = req.body.grant_type
-+  res.json(chatkit.authenticate({ grant_type }, req.query.user_id))
-+})
-
 +app.post('/users', (req, res) => {
 +  const { username } = req.body
 +  chatkit
@@ -106,6 +101,11 @@ app.use(cors())
 +    })
 +})
 
++app.post('/authenticate', (req, res) => {
++  const grant_type = req.body.grant_type
++  res.json(chatkit.authenticate({ grant_type }, req.query.user_id))
++})
+
 const PORT = 3001
 app.listen(PORT, err => {
   if (err) {
@@ -116,5 +116,9 @@ app.listen(PORT, err => {
 })
 ```
 
+There's a lot to unpack here, starting from the top:
 
-
+* First, import `pusher-chatkit-server`
+* Then, instantiate a `chatkit` instance using your unique **Insance Locator** and **Key** 
+* Before a user can connect to Chatkit, a Chatkit user must be created. In the `/users` route, take a `username` and create a Chatkit user. We'll call this route directly from React in an upcoming step.
+* Authentication is the action of proving a user is who she says she is. When someone first connects to Chatkit, a request will be sent to `/authenticate` to authenticate her. The server needs to respond with a token (returned by `chatkit.authenticate`) _if_ the user is valid. In our case, we are going to assume everyone is who they say they are and return a token from `chatkit.authenticate` no matter what. 
