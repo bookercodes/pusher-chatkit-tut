@@ -8,7 +8,7 @@ In this tutorial, you’ll learn how to build a chat app with React and [Pusher 
   
   
 
-If you think this sounds like a lot to tackle in one tutorial... You would normally be right. However, because we're going to be using Chatkit, we can focus on the UI code while Chatkit does the heavy lifting. 
+If you think this sounds like a lot to tackle in one tutorial... You would normally be right. However, because we're going to be using [Pusher Chatkit](pusher.com/chatkit), we can more or less focus exclisively on the front-end React code while Chatkit does the heavy lifting in the back-end.
 
 
 ## "What is Chatkit?"
