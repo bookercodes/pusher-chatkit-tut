@@ -55,8 +55,9 @@ app.use(cors())
 
 
 +app.post('/authenticate', (req, res) => {
-+  const grant_type = req.body.grant_type
-+  res.json(chatkit.authenticate({ grant_type }, req.query.user_id))
++  const { grant_type}  = req.body
++  const { user_id } = req.query
++  res.json(chatkit.authenticate({ grant_type }, user_id))
 +})
 
 const PORT = 3001
