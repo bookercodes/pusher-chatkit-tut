@@ -31,4 +31,7 @@ Using our cross-platform SDKs, all chat data is sent through the hosted API wher
 ![](https://i.imgur.com/qybeCr6.jpg)
 
 
-In this tutorial we will use the **Presence ("who's online")** and **typing indicator** features. Along the way you'l llearn about best practices when using Chatkit with Rreact.
+In this tutorial, we'll use the **Presence ("who's online")** and **typing indicator** features. Along the way you'l llearn about best practices when using Chatkit in a React application.
+
+
+## Setting up the developer environment
