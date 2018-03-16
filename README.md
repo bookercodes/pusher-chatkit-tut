@@ -24,13 +24,13 @@ If you think this sounds like a lot to tackle in one tutorial... You would norma
 * Read receipts
 * File transfers
 
-Using our cross-platform SDKs, all chat data is sent through the hosted API where we can manage chat state:
+Using our cross-platform SDKs, all chat data is sent through the hosted API where we manage chat state and broadcast it to your clients:
 
 ![](https://i.imgur.com/qybeCr6.jpg)
 
 You'll never have to worry about scale or infrastructure, we take care of it all for you.
 
-Perhaps the best way to learn Chatkit is to build a complete app so I highly reccomend you follow along. Along the way, you'll best practices when using Chatkit in your React application.
+Perhaps the best way to learn Chatkit is to start building, so I highly reccomend you follow along. Along the way, you'll best practices when using Chatkit in your React application.
 
 
 ## Setting up the developer environment
