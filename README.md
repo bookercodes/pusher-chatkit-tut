@@ -56,27 +56,18 @@ npm install
 
 ## Setting up the server
 
-All interactions in Chatkit happen through a connected Chatkit user, In Chatkit most ~While _most_ interaction with Chatkit will happen on the client (using pusher-chatkit-client), user management needs to happen on the sever (using pusher-chatkit-client).~
+While _most_ interactions will happen on the client, Chatkit also needs a server component to create and manage users:
 
+![](https://i.imgur.com/9elZ5SQ.jpg)
 
+12
 
+All interactions in Chatkit happen through a connected Chatkit user, which we must first create. 
 
-
-
-
+Creating users and managing their roles and permissions happens on the server using the `pusher-chatkit-server` Node module which you will need to install:
 
 ```
-
+npm install pusher-chatkit-server
 ```
-
-* Roles
-* Auth
-* User-based
-* 
-
-
-
-
-
 
 
