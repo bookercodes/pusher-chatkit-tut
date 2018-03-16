@@ -1,5 +1,15 @@
 
-## Step 3. Setup the server
+## Sever Setup
+
+In the template projekct, you'll find a file called `server.js` which spins up a simple Express sever. If you're familiar with Express,it should all be pretty familiar.
+
+
+body-parser
+cors
+express
+
+
+
 
 * Why we need server
 * What it will do
@@ -42,6 +52,12 @@ app.use(cors())
 +      }
 +    })
 + })
+
+
++app.post('/authenticate', (req, res) => {
++  const grant_type = req.body.grant_type
++  res.json(chatkit.authenticate({ grant_type }, req.query.user_id))
++})
 
 const PORT = 3001
 app.listen(PORT, err => {
