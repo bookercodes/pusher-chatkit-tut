@@ -32,7 +32,9 @@ Using our cross-platform SDKs, all chat data is sent through the hosted API wher
 
 You'll never have to worry about scale or infrastructure, we take care of it all for you.
 
-By the end of this tutorial, you should have a firm grasp of Chatkit. Along the way, you'll best practices when using Chatkit in your React application.
+Perhaps the best way to learn Chatkit is to build a complete app so I highly reccomend you follow along. Along the way, you'll best practices when using Chatkit in your React application.
 
 
 ## Setting up the developer environment
+
+
