@@ -12,10 +12,10 @@ npm install --save pusher-chatkit-server
 
 Then, update `server.js`:
 
-```js
+```diff
 const express = require('express')
 const bodyParser = require('body-parser')
-+ const Chatkit = require('pusher-chatkit-server')
++const Chatkit = require('pusher-chatkit-server')
 const cors = require('cors')
 
 const app = express()
