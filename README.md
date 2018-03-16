@@ -30,7 +30,7 @@ Using our cross-platform SDKs, all chat data is sent through the hosted API wher
 
 You'll never have to worry about scale or infrastructure, we take care of it all for you.
 
-Perhaps the best way to learn Chatkit is to start building, so I highly reccomend you follow along. Along the way, you'll best practices when using Chatkit with React.
+Perhaps the best way to learn Chatkit is to start building, so I highly reccomend you follow along. Along the way, you'll learn best practices when using Chatkit with React.
 
 
 ## Setting up the developer environment
@@ -56,6 +56,23 @@ npm install
 
 ## Setting up the server
 
+All interactions in Chatkit happen through a connected Chatkit user, In Chatkit most ~While _most_ interaction with Chatkit will happen on the client (using pusher-chatkit-client), user management needs to happen on the sever (using pusher-chatkit-client).~
+
+
+
+
+
+
+
+
+```
+
+```
+
+* Roles
+* Auth
+* User-based
+* 
 
 
 
