@@ -1,7 +1,23 @@
+# Build a Chat App with React and Pusher Chatkit
+
+## Introduction
+
+In this tutorial, you’ll learn how to build a chat app with React and [Pusher Chatkit](https://pusher.com/chatkit). When we're done we'll have a chat, complete with **Typing indicators**, **"Who's online"** list and **message retention**: 
+
+<ANIMATION OF FINAL DEMO>
+  
+  
+
+If you think this sounds like al ot to tackle in one tutorial, you would normally be right. However, because we're going to be using Chatkit, we can more or less focus exclusively on the UI code while Chatkit does all the heavy lifting.
+
+
+## "What is Chatkit?"
+
+
 
 ## Sever Setup
 
-In the template projekct, you'll find a file called `server.js` which spins up a simple Express sever. If you're familiar with Express,it should all be pretty familiar.
+In the template , you'll find a file called `server.js` which spins up a simple Express sever. If you're familiar with Express,it should all be pretty familiar.
 
 
 body-parser
@@ -69,3 +85,10 @@ app.listen(PORT, err => {
   }
 })
 ```
+
+
+There's a fair amount to unpack here, starting from the top:
+
+* First, we import [`pusher-chatkit-server`](https://www.npmjs.com/package/pusher-chatkit-server), the Node Chatkit SDK
+* Then, we instantiate our own `Chatkit` instance using the *Instance Locator* and *Key* from the previous step. Remember to replace "YOUR INSTANCE LOCATOR" and "YOUR KEY" with your own respective values
+* 
