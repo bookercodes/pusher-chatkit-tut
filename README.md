@@ -60,14 +60,61 @@ While _most_ interactions will happen on the client, Chatkit also needs a server
 
 ![](https://i.imgur.com/9elZ5SQ.jpg)
 
-12
+We won't authorise users in this tutorial but we'll still need a route to create a Chatkit user.
 
-All interactions in Chatkit happen through a connected Chatkit user, which we must first create. 
-
-Creating users and managing their roles and permissions happens on the server using the `pusher-chatkit-server` Node module which you will need to install:
+Start by installing `pusher-chatkit-server`:
 
 ```
-npm install pusher-chatkit-server
+npm install --save pusher-chatkit-sever
 ```
+
+Then update `server.js`:
+
+```diff
+const express = require('express')
+const bodyParser = require('body-parser')
+const cors = require('cors')
++const Chatkit = require('pusher-chatkit-server')
+
+const app = express()
+
++const chatkit = new Chatkit.default({
++  instanceLocator: 'YOUR INSTANCE LOCATOR',
++  key: 'YOUR KEY',
++})
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(cors())
+
++app.post('/authenticate', (req, res) => {
++  const grant_type = req.body.grant_type
++  res.json(chatkit.authenticate({ grant_type }, req.query.user_id))
++})
+
++app.post('/users', (req, res) => {
++  const { username } = req.body
++  chatkit
++    .createUser(username, username)
++    .then(() => res.sendStatus(201))
++    .catch(error => {
++      if (error.error_type === 'services/chatkit/user/user_already_exists') {
++ res.sendStatus(200)
++      } else {
++        res.status(error.statusCode).json(error)
++      }
++    })
++})
+
+const PORT = 3001
+app.listen(PORT, err => {
+  if (err) {
+    console.error(err)
+  } else {
+    console.log(`Running on port ${PORT}`)
+  }
+})
+```
+
 
 
