@@ -34,7 +34,7 @@ Perhaps the best way to learn Chatkit is to start building, so I highly reccomen
 
 Alright, let's code!
 
-## Step 1. Setup the server
+## Step 1. Download the starter template
 
 Rather than start from absoloute scratch, this walkthrough is based on a minimal starter template:
 
@@ -55,7 +55,7 @@ npm install
 (This tutorial assumes the use of `npm`, but the equivalent `yarn` commands will work as well.)
 
 
-## Setting up the server
+## Step 2. Setup the server
 
 While _most_ interactions will happen on the client, Chatkit also needs a server component to create and manage users securely:
 
