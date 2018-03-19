@@ -24,7 +24,7 @@ If you think this sounds like a lot to tackle in one tutorial... You would norma
 * Read receipts
 * File transfers
 
-Using our cross-platform SDKs, all chat data is sent through the hosted API where we manage chat state and broadcast it to your clients:
+Using our cross-platform SDKs, all chat data is sent through our hosted API where we manage chat state and broadcast it to your clients:
 
 ![](https://i.imgur.com/qybeCr6.jpg)
 
@@ -38,11 +38,9 @@ Alright, let's code!
 
 Rather than start from absoloute scratch, this walkthrough is based on a minimal starter template:
 
-The starter termplate doesn't contain any interesting logic, just boilerplate we need to run a React application and a simple Node server. 
+As you will see, the starter termplate doesn't contain any interesting logic, just boilerplate we need to run a React application and a simple Node server. 
 
-Our client-side is based on the [Create React App template](https://github.com/facebook/create-react-app). The server uses Node
-
-If you're unfamiliar with Node, don't worry. After the next section, we won't really touch the server.
+Our client-side is based on the [Create React App template](https://github.com/facebook/create-react-app). The server uses Node. If you're unfamiliar with Node, don't worry. After the next section, we won't really touch the server.
 
 To get started, download the starter template then run `npm install`:
 
