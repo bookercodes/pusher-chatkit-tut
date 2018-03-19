@@ -370,13 +370,27 @@ Once `ChatManager` has been instiated, we call `connect`.
 
 `connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you you missed something.
 
-I am quite excited about the rest of the tutoral, and I hope you are too! Now that we have our boilerplate and a Chatkit connection, we can rapidly start to add chat features. Leggo!
+I am quite excited about the rest of the tutoral, and I hope you are too! Now that we have our boilerplate and a Chatkit connection, we can rapidly start to add chat features. Seriously, it's so satifying. Leggo!
 
 ## Step 7. Subscribe to messages
 
-## Step 8. Pin messages to the bottom
+Now that we have our `ChatScreen` and Chatkit connection, we will create a component for each feature:
+
+<Illustration of chat UI and all the components we will have>
+  
+Let's start with a message list compnent by creating a file `MessageList.js` in `/src/components`: 
+
+```diff
+MessageList
+```
+
+
+
+
 
 ## Step 9. Sendmessages
+
+
 
 ## Step 10. Who's online 
 
