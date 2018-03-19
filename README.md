@@ -68,9 +68,9 @@ While _most_ interactions will happen on the client, Chatkit also needs a server
 
 ![](https://i.imgur.com/9elZ5SQ.jpg)
 
-We won't authorise users in this tutorial but we'll still need a route to create a Chatkit user.
+We won't authorise users in this tutorial, but we'll still need to define a route (like `/users`) that, when called, creates a Chatkit user.
 
-Start by installing `pusher-chatkit-server`:
+Start by installing [`pusher-chatkit-server`](https://www.npmjs.com/package/pusher-chatkit-server):
 
 ```
 npm install --save pusher-chatkit-sever
@@ -126,12 +126,12 @@ app.listen(PORT, err => {
 
 There's a lot to unpack here, starting from the top:
 
-* First, import `pusher-chatkit-server`
-* Then, instantiate a `chatkit` instance using your unique **Insance Locator** and **Key** 
-* Before a user can connect to Chatkit, a Chatkit user must be created. In the `/users` route, take a `username` and create a Chatkit user. We'll call this route directly from React in an upcoming step.
-* Authentication is the action of proving a user is who she says she is. When someone first connects to Chatkit, a request will be sent to `/authenticate` to authenticate her. The server needs to respond with a token (returned by `chatkit.authenticate`) _if_ the user is valid. In our case, we are going to assume everyone is who they say they are and return a token from `chatkit.authenticate` no matter what.
+* First, we import `Chatkit` from `pusher-chatkit-server`
+* Then, instantiate our own `chatkit` instance using the **Insance Locator** and **Key** from the dashboard.
+* Before a user can connect to Chatkit, a Chatkit user must first be created. In the `/users` route, we take a `username` supplied by the client and create a Chatkit user. We'll call this route directly in the next step.
+* Authentication is the action of proving a user is who she says she is. When someone first connects to Chatkit, a request will be sent to `/authenticate` to authenticate her. The server needs to respond with a token (returned by `chatkit.authenticate`) if the user is valid. In our case, we will (naïvely) assume everyone is who they say they are, and return a token from `chatkit.authenticate` rno matter what.
 
-That is all we need tod o on the server. Let's move on to the React client.
+That's all we need to don the server! Let's move on to the client.
 
 ## Step 4. Login 
 
