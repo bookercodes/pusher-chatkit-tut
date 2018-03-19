@@ -135,11 +135,11 @@ Boom 💥! That's all we need to don the server. Let's move on to the client...
 
 ## Step 4. Login 
 
-When someone loasds the app we want to ask them who they are:
+When someone loads the app, we want to ask them who they are:
 
-Once they hit Submit we will send their username to the server to createa a Chatkit user if one doesn't exist. 
+Once they hit **Submit**, we'll send their username to the server (to the `/users` route we just defined) and create a a Chatkit user if one doesn't exist. 
 
-To collect their username, createa UsernameForm in src/components:
+To collect the user's name, create a file called `UsernameForm.js` in in `src/components/`:
 
 ```diff
 +import React, { Component } from 'react'
