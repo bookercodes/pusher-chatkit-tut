@@ -195,7 +195,6 @@ class App extends Component {
   constructor() {
     super()
 +    this.state = {
-+      currentScreen: 'WhatIsYourUsernameScreen',
 +      currentUsername: '',
 +    }
 +    this.onUsernameSubmitted = this.onUsernameSubmitted.bind(this)
@@ -211,8 +210,7 @@ class App extends Component {
 +    })
 +      .then(response => {
 +        this.setState({
-+          userId: username,
-+          currentScreen: 'ChatScreen',
++          userId: username
 +        })
 +      })
 +      .catch(error => console.error('error', error))
@@ -229,16 +227,26 @@ class App extends Component {
 export default App
 ```
 
-The `UsernameForm` component probably looks familiar to you, it is a [React Form with a controlled component](https://reactjs.org/docs/forms.html).
+The `UsernameForm` component probably looks familiar to you, it's a [React Form with a controlled component](https://reactjs.org/docs/forms.html).
 
-There isn't a whole lot to the `App` container either. We render the `UsernameForm` and `onSubmit` send the username to the `/users` route, where a Chatkit user is created. If the request is successful, we update `this.state.username` so we can reference it later; otherwise, we `conosle.error` the error. 
-
+There isn't a whole lot to the `App` container either. We render the `UsernameForm` and, when the `onSubmit` event happens, send the username to the `/users` route, where a Chatkit user is created. If the request is successful, we update `this.state.username` so we can reference it later; otherwise, we `conosle.error` the error. 
 
 
 ## Step 5. Rendering the ChatScreen
 
-* Create ChatScreen
-* When request is sent, update current screen and pass the username
+When the user submits their name, we want to render the chat:
+
+Start by creating a container called `ChatScreen` in `/src/`:
+
+
+Then, update `App.js`:
+
+
+Normally, we would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens, but as our application is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen` in the `render` function.
+
+When we render `ChatScreen` we pass `this.state.username`. Now `ChatScreen` - where the bulk of our code will live - has all the ifnroatmon needed to conenct to Chatkit and later, render a chat.
+
+
 
 
 ## Step 6. Connect to Chatkit
