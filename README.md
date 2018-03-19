@@ -344,6 +344,7 @@ class ChatScreen extends Component {
 +      .then(currentUser => {
 +        this.setState({ currentUser }) 
 +     })
++     .catch(error => console.error('error', error))
 +  }
 
   render() {
@@ -362,6 +363,13 @@ class ChatScreen extends Component {
 
 export default ChatScreen
 ```
+
+Once the compnent has mounted, `componentDidMount` is called and we create a new `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`. The `TokenProvider` points to `/authenticate` which is the route we defined in [step #3]() on the server.
+
+Once initialised, we can call `chatManager.connect`. All Chatkit JS functions return a promise, which is handy. If you've followed the isntructions exactly and run the app, it should connect. Watch out for any `console.errors` in the terminal. If you, for example, copied your instance locator incorrectly, the error will help you learn that.
+
+
+
 
 
 
