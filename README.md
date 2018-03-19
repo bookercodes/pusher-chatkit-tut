@@ -368,10 +368,9 @@ Once the compnent has mounted, `componentDidMount` is called and we instantiate 
 
 Once `ChatManager` has been instiated, we call `connect`.
 
-`connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you missed a step.
+`connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you you missed something.
 
-
-From here on out, things are pretty simple,. With Chatkit, it really a case of wiring up Chatkit events to your UI components. All the "state" (for example, messges, who's online, who's typing) and data (for example, messages, rich media) are handled by Chatkit, so there isn't really a lot to think about. You get to focus on leverating these core functions into unique features. Here, let's start with subscribing to messages.
+I am quite excited about the rest of the tutoral, and I hope you are too! Now that we have our boilerplate and a Chatkit connection, we can rapidly start to add chat features. Leggo!
 
 ## Step 7. Subscribe to messages
 
