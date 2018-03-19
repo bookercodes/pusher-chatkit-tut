@@ -370,7 +370,21 @@ Once initialised, we can call `chatManager.connect`. All Chatkit JS functions re
 
 From here on out, things are pretty simple,. With Chatkit, it really a case of wiring up Chatkit events to your UI components. All the "state" (for example, messges, who's online, who's typing) and data (for example, messages, rich media) are handled by Chatkit, so there isn't really a lot to think about. You get to focus on leverating these core functions into unique features. Here, let's start with subscribing to messages.
 
-## Step 7. 
+## Step 7. Subscribe to messages
+
+## Step 8. Pin messages to the bottom
+
+## Step 9. Sendmessages
+
+## Step 10. Who's online 
+
+## Step 11 Typing indicators
+
+## Step 12. Adding some colour (Styles)
+
+
+
+
 
 
 
