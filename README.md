@@ -320,6 +320,7 @@ Then, update `ChatScreen.js`:
 
 ```diff
 import React, { Component } from 'react'
++import Chatkit from 'pusher-chatkit-client'
 
 class ChatScreen extends Component {
 +  constructor(props) {
