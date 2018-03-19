@@ -364,11 +364,9 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-Once the compnent has mounted, `componentDidMount` is called and we instantiate a `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`. The `TokenProvider` points to `/authenticate`, which we defined earlier.
-
-Once `ChatManager` has been instiated, we call `connect`.
-
-`connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you you missed something.
+* Once the compnent has mounted, `componentDidMount` is called and we instantiate a `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`. The `TokenProvider` points to `/authenticate`, which we defined earlier.
+* Once `ChatManager` has been instiated, we call `connect`.
+* `connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you you missed something.
 
 I am quite excited about the rest of the tutoral, and I hope you are too! Now that we have our boilerplate and a Chatkit connection, we can rapidly start to add chat features. Seriously, it's so satifying. Leggo!
 
