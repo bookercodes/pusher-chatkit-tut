@@ -364,7 +364,7 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-Once the compnent has mounted, `componentDidMount` is called and we create a new `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`. The `TokenProvider` points to `/authenticate` which is the route we defined earlier on the server.
+Once the compnent has mounted, `componentDidMount` is called and we instantiate a `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`. The `TokenProvider` points to `/authenticate` which is the route we defined earlier on the server.
 
 Once `ChatManager` has been instiated, we call `connect`.
 
