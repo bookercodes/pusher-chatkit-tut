@@ -229,9 +229,9 @@ class App extends Component {
 export default App
 ```
 
-The `UsernameForm` component should be familiar to you. If not, you can read more about React Forms and controlled components [here](https://reactjs.org/docs/forms.html). 
+The `UsernameForm` component probably looks familiar to you, it is a [React Form with a controlled component](https://reactjs.org/docs/forms.html).
 
-There isn't a whole lot to the `App` container either. We render the `UsernameForm` and `onSubmit` send the username to the `/users` route we defined previously, where a Chatkit user is created. Upon a successful request, we update the `username` state so we can reference it later.
+There isn't a whole lot to the `App` container either. We render the `UsernameForm` and `onSubmit` send the username to the `/users` route, where a Chatkit user is created. If the request is successful, we update `this.state.username` so we can reference it later; otherwise, we `conosle.error` the error. 
 
 
 
