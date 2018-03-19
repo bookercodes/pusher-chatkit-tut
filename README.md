@@ -217,10 +217,8 @@ class App extends Component {
 +  }
 
   render() {
--     return <h1>Chat</h1>
-+    if (this.state.currentScreen === 'WhatIsYourUsernameScreen') {
-+      return <UsernameForm onSubmit={this.onUsernameSubmitted} />
-+    }
+-   return <h1>Chat</h1>
++   return <UsernameForm onSubmit={this.onUsernameSubmitted} />
   }
 }
 
@@ -238,13 +236,77 @@ When the user submits their name, we want to render the chat:
 
 Start by creating a container called `ChatScreen` in `/src/`:
 
+```diff
++import React, { Component } from 'react'
++
++class ChatScreen extends Component {  
++  render() {
++    const styles = {
++      container: {
++        display: 'flex'
++      }
++    }
++    return (
++      <div style={styles.container}>
++        <h1>Chat</h1>
++      </div>
++    )
++  }
++}
++
++export default ChatScreen
+```
 
 Then, update `App.js`:
 
+```diff
+import React, { Component } from 'react'
+import UsernameForm from './components/UsernameForm'
 
-Normally, we would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens, but as our application is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen` in the `render` function.
+class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      currentUsername: '',
++     currentScreen: 'WhatIsYourUsernameScreen' 
+    }
+    this.onUsernameSubmitted = this.onUsernameSubmitted.bind(this)
+ }
 
-When we render `ChatScreen` we pass `this.state.username`. Now `ChatScreen` - where the bulk of our code will live - has all the ifnroatmon needed to conenct to Chatkit and later, render a chat.
+  onUsernameSubmitted(username) {
+    fetch('http://localhost:3001/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username }),
+    })
+      .then(response => {
+        this.setState({
+          userId: username
+        })
+      })
+      .catch(error => console.error('error', error))
+  }
+
+ render() {
++    if (this.state.currentScreen === 'WhatIsYourUsernameScreen') {
+      return <UsernameForm onSubmit={this.onUsernameSubmitted} />
++    }
++    if (this.state.currentScreen === 'Chatscreen') {
++      return <ChatScreen userId={this.state.userId} /> 
++    }
+  }
+}
+
+export default App
+```
+
+
+
+Normally, we would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but as our application is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen` in the `render` function.
+
+When we render `ChatScreen` we pass `this.state.username` as a prop. Now, `ChatScreen` has all the information needed to connect to Chatkit and, in the upcoming steps, render components of our chat UI.
 
 
 
