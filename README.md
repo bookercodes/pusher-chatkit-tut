@@ -127,11 +127,11 @@ app.listen(PORT, err => {
 There's a lot to unpack here, starting from the top:
 
 * First, we import `Chatkit` from `pusher-chatkit-server`
-* Then, instantiate our own `chatkit` instance using the **Insance Locator** and **Key** from the dashboard.
-* Before a user can connect to Chatkit, a Chatkit user must first be created. In the `/users` route, we take a `username` supplied by the client and create a Chatkit user. We'll call this route directly in the next step.
-* Authentication is the action of proving a user is who she says she is. When someone first connects to Chatkit, a request will be sent to `/authenticate` to authenticate her. The server needs to respond with a token (returned by `chatkit.authenticate`) if the user is valid. In our case, we will (naïvely) assume everyone is who they say they are, and return a token from `chatkit.authenticate` rno matter what.
+* Then, instantiate our own `chatkit` instance using the **Insance Locator** and **Key** from the dashboard
+* In the `/users` route, we take a `username` and create a Chatkit user through our `chatkit` instance
+* Authentication is the action of proving a user is who she says she is. When someone first connects to Chatkit, a request will be sent to `/authenticate` to authenticate her. The server needs to respond with a token (returned by `chatkit.authenticate`) if the user is valid. In our case, we will (naïvely) assume everyone is who they say they are, and return a token from `chatkit.authenticate` no matter what.
 
-That's all we need to don the server! Let's move on to the client.
+Boom 💥! That's all we need to don the server. Let's move on to the client...
 
 ## Step 4. Login 
 
