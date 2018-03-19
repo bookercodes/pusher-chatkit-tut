@@ -284,7 +284,7 @@ class App extends Component {
       .then(response => {
         this.setState({
           userId: username,
-          currentScreen: 'ChatScreen'
++          currentScreen: 'ChatScreen'
         })
       })
       .catch(error => console.error('error', error))
@@ -303,13 +303,9 @@ class App extends Component {
 export default App
 ```
 
+Normally, you would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but because our app is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen` in the `render` function.
 
-
-Normally, we would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but as our application is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen` in the `render` function.
-
-When we render `ChatScreen` we pass `this.state.username` as a prop. Now, `ChatScreen` has all the information needed to connect to Chatkit and, in the upcoming steps, render components of our chat UI.
-
-
+When we render `ChatScreen` we pass `this.state.username` as a prop.  Now, `ChatScreen` has all the information needed to connect to Chatkit and render chat components.
 
 
 ## Step 6. Connect to Chatkit
