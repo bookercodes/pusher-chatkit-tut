@@ -305,7 +305,7 @@ export default App
 
 Normally, you would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but because our app is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen` in the `render` function.
 
-When we render `ChatScreen` we pass `this.state.username` as a prop.  Now, `ChatScreen` has all the information needed to connect to Chatkit and render chat components.
+When we render `ChatScreen`, we pass `this.state.username` as a prop.  Now, `ChatScreen` has all the information needed to connect to Chatkit. Let's do that next...
 
 
 ## Step 6. Connect to Chatkit
