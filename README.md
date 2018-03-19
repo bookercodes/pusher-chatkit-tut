@@ -310,6 +310,104 @@ When we render `ChatScreen`, we pass `this.state.username` as a prop.  Now, `Cha
 
 ## Step 6. Connect to Chatkit
 
+Earlier, we installed `pusher-chatkit-server`. Now we're in client-land, you'll need to install [`pusher-chatkit-client`](https://www.npmjs.com/search?q=pusher-chatkit-client) too:
+
+```
+npm install --save pusher-chatkit-client
+```
+
+Then, update `ChatScreen.js`:
+
+``diff
+import React, { Component } from 'react'
+import Chatkit from 'pusher-chatkit-client'
+
+class ChatScreen extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentUser: {}
+    }
+  }
+
+  componentDidMount () {
+    const chatManager = new Chatkit.ChatManager({
+      instanceLocator: 'v1:us1:542391ba-ff28-4674-a4ad-a464fd59f9f6',
+      userId: this.props.userId,
+      tokenProvider: new Chatkit.TokenProvider({
+        url: 'http://localhost:3001/authenticate',
+      }),
+    })
+
+    chatManager
+      .connect()
+      .then(currentUser => {
+        this.setState({ currentUser })
+        return currentUser.subscribeToRoom(
+          5599364,
+          {
+            newMessage: message => {
+              this.setState({
+                messages: [...this.state.messages, message],
+              })
+            },
+            userStartedTyping: user => {
+              this.setState({
+                usersWhoAreTyping: [...this.state.usersWhoAreTyping, user.name],
+              })
+            },
+            userStoppedTyping: user => {
+              this.setState({
+                usersWhoAreTyping: this.state.usersWhoAreTyping.filter(
+                  username => username !== user.name
+                ),
+              })
+            },
+            userCameOnline: () => {
+              console.log('userCameOnline')
+              this.forceUpdate()
+            },
+            userWentOffline: () => this.forceUpdate(),
+            userJoined: user => {
+              const currentRoom = this.state.currentUser.rooms.find(
+                room => room.id === this.state.currentRoom.id
+              )
+              this.setState({
+                currentRoom,
+              })
+              this.forceUpdate()
+            },
+          },
+          100
+        )
+      })
+      .then(currentRoom => {
+        this.setState({ currentRoom })
+      })
+      .catch(error => console.error('error', error))
+  }
+  
+  render() {
+    const styles = {
+      container: {
+        display: 'flex'
+      }
+    }
+    return (
+      <div style={styles.container}>
+        <h1>Chat</h1>
+      </div>
+    )
+  }
+
+
+}
+
+export default ChatScreen
+```
+
+
+
 
 
 
