@@ -283,7 +283,8 @@ class App extends Component {
     })
       .then(response => {
         this.setState({
-          userId: username
+          userId: username,
+          currentScreen: 'ChatScreen'
         })
       })
       .catch(error => console.error('error', error))
