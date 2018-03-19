@@ -365,18 +365,186 @@ export default ChatScreen
 ```
 
 * Once the compnent has mounted, `componentDidMount` is called and we instantiate a `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`. The `TokenProvider` points to `/authenticate`, which we defined earlier.
-* Once `ChatManager` has been instiated, we call `connect`.
+* Once `ChatManager` has been instantiated, we call `connect`.
 * `connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you you missed something.
 
 I am quite excited about the rest of the tutoral, and I hope you are too! Now that we have our boilerplate and a Chatkit connection, we can rapidly start to add chat features. Seriously, it's so satifying. Leggo!
 
 ## Step 7. Subscribe to messages
 
-Now that we have our `ChatScreen` and Chatkit connection, we will create a component for each feature:
 
-<Illustration of chat UI and all the components we will have>
+In fact, quickly, before going any further, let's setup a quick CSS layout:
+
+
+```diff
+import React, { Component } from 'react'
+import Chatkit from 'pusher-chatkit-client'
+import MessagesList from './components/MessagesList'
+
+class ChatScreen extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentUser: {},
+      currentRoom: {},
+      messages: [],
+      usersWhoAreTyping: [],
+    }
+  }
+
+  componentDidMount () {
+    const chatManager = new Chatkit.ChatManager({
+      instanceLocator: 'YOUR INSTANCE LOCATOR',
+      userId: this.props.userId,
+      tokenProvider: new Chatkit.TokenProvider({
+        url: 'http://localhost:3001/authenticate',
+      }),
+    })
+
+    chatManager
+      .connect()
+      .then(currentUser => {
+        this.setState({ currentUser })
+        return currentUser.subscribeToRoom(
+          5599364,
+          {
+            newMessage: message => {
+              this.setState({
+                messages: [...this.state.messages, message],
+              })
+            }
+          },
+          100
+        )
+      })
+      .then(currentRoom => {
+        this.setState({ currentRoom })
+      })
+      .catch(error => console.error('error', error))
+  }
   
-Let's start with a message list compnent by creating a file `MessageList.js` in `/src/components`: 
+  render() {
+    const styles = {
+      container: {
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        color: 'white',
+      },
+      header: {
+        backgroundImage:
+          'linear-gradient(to right, #2e646d, #2e646d, #2e646d, #2e646d, #2e646d)',
+        padding: 20,
+      },
+      chatContainer: {
+        display: 'flex',
+        flex: 1,
+      },
+      whosOnlineListContainer: {
+        width: '15%',
+        backgroundColor: '#2b303b',
+        backgroundImage:
+          'linear-gradient(to bottom, #336f78, #2d6a79, #296579, #296079, #2b5a78)',
+        padding: 20,
+      },
+      chatListContainer: {
+        width: '85%',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundImage:
+          'linear-gradient(to bottom, #437f86, #3e7a88, #3c7689, #3c7089, #3f6b88)',
+      },
+      chatList: {
+        padding: 20,
+        flex: 1,
+      },
+    }
+    return (
+      <div style={styles.container}>
+        <header style={styles.header}>
+          <h2>Chatly</h2>
+        </header>
+        <div style={styles.chatContainer}>
+          <aside style={styles.whosOnlineListContainer}>
+            ...
+          </aside>
+          <section style={styles.chatListContainer}>
+            <MessagesList
+              messages={this.state.messages}
+              style={styles.chatList}
+            />
+            <TypingIndicator usersWhoAreTyping={this.state.usersWhoAreTyping} />
+            <SendMessageForm
+              onSubmit={this.sendMessage}
+              onChange={this.sendTypingEvent}
+            />
+          </section>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default ChatScreen
+```
+
+
+Once you have a Chatkit connection, your chat - for the most part - becomes as simple as hooking up Chatkit events and their data to UI components. Here, let me show you.
+
+Create a `MessageList.js` file in `/src/components`:
+
+```diff
++ import React, { Component } from 'react'
++ 
++ class MessagesList extends Component {
++   render() {
++     const styles = {
++       container: {
++         overflowY: 'scroll',
++       },
++       ul: {
++         listStyle: 'none',
++       },
++       li: {
++         marginTop: 13,
++         marginBottom: 13,
++       },
++       senderUsername: {
++         fontWeight: 'bold',
++       },
++       message: { fontSize: 15 },
++     }
++     return (
++       <div
++         style={{
++           ...this.props.style,
++           ...styles.container,
++         }}
++       >
++         <ul style={styles.ul}>
++           {this.props.messages.map((message, index) => (
++             <li key={index} style={styles.li}>
++               <div>
++                 <span style={styles.senderUsername}>{message.senderId}</span>{' '}
++               </div>
++               <p style={styles.message}>{message.text}</p>
++             </li>
++           ))}
++         </ul>
++       </div>
++     )
++   }
++ }
++ 
++ export default MessagesList
+```
+
+
+Then import and render it in `ChatScreen.js`:
+
+
+
+
 
 ```diff
 MessageList
