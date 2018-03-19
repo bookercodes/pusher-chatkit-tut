@@ -364,9 +364,12 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-Once the compnent has mounted, `componentDidMount` is called and we create a new `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`. The `TokenProvider` points to `/authenticate` which is the route we defined in [step #3]() on the server.
+Once the compnent has mounted, `componentDidMount` is called and we create a new `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`. The `TokenProvider` points to `/authenticate` which is the route we defined earlier on the server.
 
-Once initialised, we can call `chatManager.connect`. All Chatkit JS functions return a promise, which is handy. If you've followed the isntructions exactly and run the app, it should connect. Watch out for any `console.errors` in the terminal. If you, for example, copied your instance locator incorrectly, the error will help you learn that.
+Once `ChatManager` has been instiated, we call `connect`.
+
+`connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you missed a step.
+
 
 From here on out, things are pretty simple,. With Chatkit, it really a case of wiring up Chatkit events to your UI components. All the "state" (for example, messges, who's online, who's typing) and data (for example, messages, rich media) are handled by Chatkit, so there isn't really a lot to think about. You get to focus on leverating these core functions into unique features. Here, let's start with subscribing to messages.
 
