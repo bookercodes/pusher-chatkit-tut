@@ -80,7 +80,7 @@ Start by installing [`pusher-chatkit-server`](https://www.npmjs.com/package/push
 npm install --save pusher-chatkit-sever
 ```
 
-Then update `server.js`:
+Then update `./server.js`:
 
 ```diff
 const express = require('express')
