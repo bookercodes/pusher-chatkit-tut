@@ -65,7 +65,6 @@ To create your own Chatkit instance, head to the dashboard, hit **Create new**, 
 In the Keys tab, take note of your **Instance Locator** and **Key**. We'll need them both in the next section.
 
 
-
 ## Step 3. Setup the server
 
 While _most_ interactions will happen on the client, Chatkit also needs a server component to create and manage users securely:
@@ -143,7 +142,7 @@ When someone loads the app, we want to ask them who they are:
 
 Once they hit **Submit**, we'll send their username to the server (to the `/users` route we just defined) and create a a Chatkit user if one doesn't exist. 
 
-To collect the user's name, create a file called `UsernameForm.js` in in `src/components/`:
+To collect the user's name, create a component called `./UsernameForm.js` in in `src/components/`:
 
 ```diff
 +import React, { Component } from 'react'
@@ -189,7 +188,7 @@ To collect the user's name, create a file called `UsernameForm.js` in in `src/co
 + export default UsernameForm
 ```
 
-Then, update `App.js`:
+Then update `App.js`:
 
 ```diff
 import React, { Component } from 'react'
@@ -229,9 +228,11 @@ class App extends Component {
 export default App
 ```
 
-The `UsernameForm` component probably looks familiar to you, it's a [React Form with a controlled component](https://reactjs.org/docs/forms.html).
+Starting from the top,
 
-There isn't a whole lot to the `App` container either. We render the `UsernameForm` and, when the `onSubmit` event happens, send the username to the `/users` route, where a Chatkit user is created. If the request is successful, we update `this.state.username` so we can reference it later; otherwise, we `conosle.error` the error. 
+* First, we import the `UsernameForm` component. It probably looks familiar to you because it uses a common React pattern called controlled components. You can read more abiut controlled components [here](https://reactjs.org/docs/forms.html)
+* In the `render` function we - you guessed it - _render_ the `UsernameForm` and hook up the `onUsernameSubmitted` event handler
+* When `onUsernameSubmitted` is called we send the `username` to the `/users` route we defined earlier. If the request is successful, we update `this.state.username` so we can reference it later; otherwise, we `conosle.error` the error. 
 
 
 ## Step 5. Rendering the ChatScreen
