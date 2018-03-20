@@ -636,6 +636,15 @@ export default ChatScreen
 
 ```
 
+* Once you connect to Chatkit you get a `currentUser` object that represents... the current connected user
+* Chatkit is "user-driven" meaning most if not all interactions happen on the `currentUser`
+* In this case we call `subscribeToRoom` on the `currentUser` (`currentUser.subscribeToRoom`)
+* `subscribeToRoom` takes an event handler called `onNewMessage` that is fired each time a new message arrives. Because we specific `100`, it is also called _retroactively_ for up to 100 most recent messages. This allows you to easily show users their recent messaages and introduce context around the current conversation that might be happening
+* It is a fair chunk of code but in pracice, al lwe're doing is taking those new messages` updating our container state, and rendering them in the `MessageList` we defined before.
+
+
+
+
 
 
 
