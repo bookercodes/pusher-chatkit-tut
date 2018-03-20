@@ -22,7 +22,7 @@ If you think this sounds like a lot to tackle in one tutorial... You would norma
 * Typing indicators
 * "Who's online" presence
 * Read receipts
-* File transfers
+* Photo, video, and audio messages
 
 Using our cross-platform SDKs, all chat data is sent through our hosted API where we manage chat state and broadcast it to your clients:
 
