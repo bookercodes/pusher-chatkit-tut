@@ -230,9 +230,9 @@ export default App
 
 Starting from the top,
 
-* First, we import the `UsernameForm` component. It probably looks familiar to you because it uses a common React pattern called controlled components. You can read more abiut controlled components [here](https://reactjs.org/docs/forms.html)
+* First, we import the `UsernameForm` component. It probably looks familiar to you because it uses a common React pattern called controlled components. You can read more about controlled components [here](https://reactjs.org/docs/forms.html)
 * In the `render` function we - you guessed it - _render_ the `UsernameForm` and hook up the `onUsernameSubmitted` event handler
-* When `onUsernameSubmitted` is called we send the `username` to the `/users` route we defined earlier. If the request is successful, we update `this.state.username` so we can reference it later; otherwise, we `conosle.error` the error. 
+* When `onUsernameSubmitted` is called we send a POST request to the `/users` route we defined earlier. If the request is successful, we update `this.state.username` so we can reference it later; otherwise, we `conosle.error` the error. 
 
 
 ## Step 5. Rendering the ChatScreen
