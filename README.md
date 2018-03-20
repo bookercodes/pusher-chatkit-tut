@@ -650,6 +650,304 @@ export default ChatScreen
 
 ## Step 9. Sendmessages
 
+Come on, we're on a roll. Let's allow users to send messages by first creating a SendMessagEForm.js comoonent in `/src/comonents`:
+
+```diff
++ import React, { Component } from 'react'
++ 
++ class SendMessageForm extends Component {
++   constructor(props) {
++     super(props)
++     this.state = {
++       text: '',
++     }
++     this.onSubmit = this.onSubmit.bind(this)
++     this.onChange = this.onChange.bind(this)
++   }
++ 
++   onSubmit(e) {
++     e.preventDefault()
++     this.props.onSubmit(this.state.text)
++     this.setState({ text: '' })
++   }
++ 
++   onChange(e) {
++     this.setState({ text: e.target.value })
++     this.props.onChange()
++   }
++ 
++   render() {
++     const styles = {
++       container: {
++         padding: 20,
++         borderTop: '1px #4C758F solid',
++         marginBottom: 20,
++       },
++       form: {
++         display: 'flex',
++       },
++       input: {
++         color: 'inherit',
++         background: 'none',
++         outline: 'none',
++         border: 'none',
++         flex: 1,
++         fontSize: 16,
++       },
++     }
++     return (
++       <div style={styles.container}>
++         <div>
++           <form onSubmit={this.onSubmit} style={styles.form}>
++             <input
++               type="text"
++               placeholder="Type a message here then hit ENTER"
++               onChange={this.onChange}
++               value={this.state.text}
++               style={styles.input}
++             />
++           </form>
++         </div>
++       </div>
++     )
++   }
++ }
++ 
++ export default SendMessageForm
+```
+
+And (you guessed it!), update `ChatScreen.js`:
+
+```
+import React, { Component } from 'react'
+import Chatkit from 'pusher-chatkit-client'
++ import SendMessageForm from './components/SendMessageForm'
+import MessagesList from './components/MessagesList'
+
+class ChatScreen extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentUser: {},
+      currentRoom: {},
+      messages: []
+    }
++    this.sendMessage = this.sendMessage.bind(this)
+  }
+
+  componentDidMount () {
+    const chatManager = new Chatkit.ChatManager({
+      instanceLocator: 'YOUR INSTANCE LOCATOR',
+      userId: this.props.userId,
+      tokenProvider: new Chatkit.TokenProvider({
+        url: 'http://localhost:3001/authenticate',
+      }),
+    })
+
+    chatManager
+      .connect()
+      .then(currentUser => {
+        this.setState({ currentUser })
+        return currentUser.subscribeToRoom(
+          5599364,
+          {
+            newMessage: message => {
+              this.setState({
+                messages: [...this.state.messages, message],
+              })
+            },
+          },
+          100
+        )
+      })
+      .then(currentRoom => {
+        this.setState({ currentRoom })
+      })
+      .catch(error => console.error('error', error))
+  }
+  
++  sendMessage(text) {
++    this.state.currentUser.sendMessage({
++      text,
++      roomId: this.state.currentRoom.id,
++    })
++  }
+
+  render() {
+    const styles = {
+     ...
+    }
+    return (
+      <div style={styles.container}>
+        <header style={styles.header}>
+          <h2>Chatly</h2>
+        </header>
+        <div style={styles.chatContainer}>
+          <aside style={styles.whosOnlineListContainer}>
+          </aside>
+          <section style={styles.chatListContainer}>
+            <MessagesList
+              messages={this.state.messages}
+              style={styles.chatList}
+            />
++            <SendMessageForm
++              onSubmit={this.sendMessage}
++              onChange={this.sendTypingEvent}
++            />
+          </section>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default ChatScreen
+```
+
+* The `SendMessageForm` component is similar to `WhatIsYourUsernameForm` we defined earlier, a React form with controlled components
+* When the form is submitted, we access `currentUser` via `this.state` and call `sendMessage` (rememnber, most interactions happen on `currentUser`)
+
+## Typing indicators
+
+Realtime Typing indicators can be a bit tricky to implement on your own. You have to manage additional web sockets, chat state and wire it all together. With Chatkit, it's two fundamental lines.
+
+Start by creating a `TypingIndicator.js` component in `/src/components`, something simpl just to render the name of those typing:
+
+```diff
++import React, { Component } from 'react'
++
++class TypingIndicator extends Component {
++  render() {
++    if (this.props.usersWhoAreTyping.length > 0) {
++      return (
++        <div>
++          {`${this.props.usersWhoAreTyping
++            .slice(0, 2)
++            .join(' and ')} is typing`}
++        </div>
++      )
++    }
++    return <div />
++  }
++}
++
++export default TypingIndicator
+```
+
+Then we'll update `ChatScreen.js`:
+
+```diff
+import React, { Component } from 'react'
+import Chatkit from 'pusher-chatkit-client'
+import SendMessageForm from './components/SendMessageForm'
+import WhosOnlineList from './components/WhosOnlineList'
+import MessagesList from './components/MessagesList'
+import TypingIndicator from './components/TypingIndicator'
+
+class ChatScreen extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentUser: {},
+      currentRoom: {},
+      messages: [],
++      usersWhoAreTyping: [],
+    }
+    this.sendMessage = this.sendMessage.bind(this)
++    this.sendTypingEvent = this.sendTypingEvent.bind(this)
+  }
+
+  componentDidMount () {
+    const chatManager = new Chatkit.ChatManager({
+      instanceLocator: 'YOUR INSTANCE LOCATOR',
+      userId: this.props.userId,
+      tokenProvider: new Chatkit.TokenProvider({
+        url: 'http://localhost:3001/authenticate',
+      }),
+    })
+
+    chatManager
+      .connect()
+      .then(currentUser => {
+        this.setState({ currentUser })
+        return currentUser.subscribeToRoom(
+          5599364,
+          {
+            newMessage: message => {
+              this.setState({
+                messages: [...this.state.messages, message],
+              })
+            },
++            userStartedTyping: user => {
++              this.setState({
++                usersWhoAreTyping: [...this.state.usersWhoAreTyping, user.name],
++              })
++            },
++            userStoppedTyping: user => {
++              this.setState({
++                usersWhoAreTyping: this.state.usersWhoAreTyping.filter(
++                  username => username !== user.name
++                ),
++              })
++            },
+          },
+          100
+        )
+      })
+      .then(currentRoom => {
+        this.setState({ currentRoom })
+      })
+      .catch(error => console.error('error', error))
+  }
+
+  sendMessage(text) {
+    this.state.currentUser.sendMessage({
+      text,
+      roomId: this.state.currentRoom.id,
+    })
+  }
+
++  sendTypingEvent() {
++    this.state.currentUser
++      .isTypingIn(this.state.currentRoom.id)
++      .catch(error => console.error('error', error))
++  }
+
+  render() {
+    const styles = {
+      ...
+    }
+    return (
+      <div style={styles.container}>
+        <header style={styles.header}>
+          <h2>Chatly</h2>
+        </header>
+        <div style={styles.chatContainer}>
+          <aside style={styles.whosOnlineListContainer}>
+            <WhosOnlineList
+              currentUser={this.state.currentUser}
+              users={this.state.currentRoom.users}
+            />
+          </aside>
+          <section style={styles.chatListContainer}>
+            <MessagesList
+              messages={this.state.messages}
+              style={styles.chatList}
+            />
++            <TypingIndicator usersWhoAreTyping={this.state.usersWhoAreTyping} />
+            <SendMessageForm
+              onSubmit={this.sendMessage}
+              onChange={this.sendTypingEvent}
+            />
+          </section>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default ChatScreen
+```
 
 
 ## Step 10. Who's online 
