@@ -10,7 +10,7 @@ If you think this sounds like a lot to tackle in one tutorial... You would norma
 
 ## Good to know
 
-* Before delving into the walkthrough, it would be good to have a basic understanding of [React](https://reactjs.org/tutorial/tutorial.html)
+* Before delving into this walkthrough, it would be good to have a basic understanding of [React](https://reactjs.org/tutorial/tutorial.html)
 
 
 ## What is Chatkit?
