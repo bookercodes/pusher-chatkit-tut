@@ -45,8 +45,8 @@ Our client-side is based on the [Create React App template](https://github.com/f
 To get started, download the starter template then run `npm install`:
 
 ```
-git clone
-cd ./
+git clone https://github.com/bookercodes/chatkit-react-tutorial chatkit-react-tutorial-template
+cd chatkit-react-tutorial-template
 npm install
 ```
 
