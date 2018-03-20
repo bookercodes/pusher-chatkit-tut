@@ -62,7 +62,7 @@ To create your own Chatkit instance, head to the dashboard, hit **Create new**, 
 
 ![](https://github.com/bookercodes/pusher-chatkit-tut/blob/master/Screen%20Shot%202018-03-20%20at%2016.22.17.png?raw=true)
 
-In the Keys tab, take note of the **Instance Locator** and **Keys**. We'll need these both in the next section.
+In the Keys tab, take note of the **Instance Locator** and **Key**. We'll need these both in the next section.
 
 
 
