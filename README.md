@@ -949,10 +949,251 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
+* Like I mentioned, typing indicators come down to two fundamental actions: Calling `currentUser.userIsTyping` when the user is typing (`onChange`) and then listening to `userStartedTyping` and `userStoppedTyping`
+* When a user starts typing those events are fired and we update our application state
+* You may have noticed that we never tell Chatkit when the `currentUsers` stops typing . This is by design. If Chatkit doesn't receive an `userIsTyping` call after a few seconds, it assumes the user stopped typing and informs all ove rclients. In practice, this is raelly slick.
+
 
 ## Step 10. Who's online 
 
-## Step 11 Typing indicators
+Can you feel the momentum? We're on a roll! To finish up the chat app, let's use Chatkit's "Who's online" feature to render a list of users and their real-time online stauts.
+
+Start by creating a `WhosOnlineList.js` compoonent in `/src/components`:
+
+```diff
+import React, { Component } from 'react'
+
+class Item extends Component {
+  render() {
+    const styles = {
+      li: {
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: 5,
+        marginBottom: 5,
+        paddingTop: 2,
+        paddingBottom: 2,
+      },
+      div: {
+        borderRadius: '50%',
+        width: 11,
+        height: 11,
+        marginRight: 10,
+      },
+    }
+    return (
+      <li style={styles.li}>
+        <div
+          style={{
+            ...styles.div,
+            backgroundColor:
+              this.props.presenceState === 'online' ? '#00F469' : '#4c758f',
+          }}
+        />
+        {this.props.children}
+      </li>
+    )
+  }
+}
+
+class WhosOnlineList extends Component {
+  renderUsers() {
+    return (
+      <ul>
+        {this.props.users.map((user, index) => {
+          if (user.id === this.props.currentUser.id) {
+            return (
+              <Item key={index} presenceState="online">
+                {user.name} (You)
+              </Item>
+            )
+          }
+          return (
+            <Item key={index} presenceState={user.presence.state}>
+              {user.name}
+            </Item>
+          )
+        })}
+      </ul>
+    )
+  }
+
+  render() {
+    if (this.props.users) {
+      return this.renderUsers()
+    } else {
+      return <p>Loading...</p>
+    }
+  }
+}
+
+export default WhosOnlineList
+```
+
+Then (for the last time!) update `ChatScreen.js`:
+
+
+```diff
+import SendMessageForm from './components/SendMessageForm'
+import WhosOnlineList from './components/WhosOnlineList'
+import MessagesList from './components/MessagesList'
+import TypingIndicator from './components/TypingIndicator'
+
+class ChatScreen extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentUser: {},
+      currentRoom: {},
+      messages: [],
+      usersWhoAreTyping: [],
+    }
+    this.sendMessage = this.sendMessage.bind(this)
+    this.sendTypingEvent = this.sendTypingEvent.bind(this)
+  }
+
+  connectToChatkit() {
+    const chatManager = new Chatkit.ChatManager({
+      instanceLocator: 'v1:us1:542391ba-ff28-4674-a4ad-a464fd59f9f6',
+      userId: this.props.userId,
+      tokenProvider: new Chatkit.TokenProvider({
+        url: 'http://localhost:3001/authenticate',
+      }),
+    })
+
+    chatManager
+      .connect()
+      .then(currentUser => {
+        this.setState({ currentUser })
+        return currentUser.subscribeToRoom(
+          5599364,
+          {
+            newMessage: message => {
+              this.setState({
+                messages: [...this.state.messages, message],
+              })
+            },
+            userStartedTyping: user => {
+              this.setState({
+                usersWhoAreTyping: [...this.state.usersWhoAreTyping, user.name],
+              })
+            },
+            userStoppedTyping: user => {
+              this.setState({
+                usersWhoAreTyping: this.state.usersWhoAreTyping.filter(
+                  username => username !== user.name
+                ),
+              })
+            },
+            userCameOnline: () => {
+              console.log('userCameOnline')
+              this.forceUpdate()
+            },
+            userWentOffline: () => this.forceUpdate(),
+            userJoined: user => {
+              const currentRoom = this.state.currentUser.rooms.find(
+                room => room.id === this.state.currentRoom.id
+              )
+              this.setState({
+                currentRoom,
+              })
+              this.forceUpdate()
+            },
+          },
+          100
+        )
+      })
+      .then(currentRoom => {
+        this.setState({ currentRoom })
+      })
+      .catch(error => console.error('error', error))
+  }
+
+  componentDidMount() {
+    this.connectToChatkit()
+  }
+
+  sendMessage(text) {
+    this.state.currentUser.sendMessage({
+      text,
+      roomId: this.state.currentRoom.id,
+    })
+  }
+
+  sendTypingEvent() {
+    this.state.currentUser
+      .isTypingIn(this.state.currentRoom.id)
+      .catch(error => console.error('error', error))
+  }
+
+  render() {
+    const styles = {
+      container: {
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        color: 'white',
+      },
+      header: {
+        backgroundImage:
+          'linear-gradient(to right, #2e646d, #2e646d, #2e646d, #2e646d, #2e646d)',
+        padding: 20,
+      },
+      chatContainer: {
+        display: 'flex',
+        flex: 1,
+      },
+      whosOnlineListContainer: {
+        width: '15%',
+        backgroundColor: '#2b303b',
+        backgroundImage:
+          'linear-gradient(to bottom, #336f78, #2d6a79, #296579, #296079, #2b5a78)',
+        padding: 20,
+      },
+      chatListContainer: {
+        width: '85%',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundImage:
+          'linear-gradient(to bottom, #437f86, #3e7a88, #3c7689, #3c7089, #3f6b88)',
+      },
+      chatList: {
+        padding: 20,
+        flex: 1,
+      },
+    }
+    return (
+      <div style={styles.container}>
+        <header style={styles.header}>
+          <h2>Chatly</h2>
+        </header>
+        <div style={styles.chatContainer}>
+          <aside style={styles.whosOnlineListContainer}>
+            <WhosOnlineList
+              currentUser={this.state.currentUser}
+              users={this.state.currentRoom.users}
+            />
+          </aside>
+          <section style={styles.chatListContainer}>
+            <MessagesList
+              messages={this.state.messages}
+              style={styles.chatList}
+            />
+            <TypingIndicator usersWhoAreTyping={this.state.usersWhoAreTyping} />
+            <SendMessageForm
+              onSubmit={this.sendMessage}
+              onChange={this.sendTypingEvent}
+            />
+          </section>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default ChatScreen
+```
+
 
 ## Step 12. Adding some colour (Styles)
 
