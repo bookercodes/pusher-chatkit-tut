@@ -370,25 +370,30 @@ export default ChatScreen
 
 I am quite excited about the rest of the tutoral, and I hope you are too! Now that we have our boilerplate and a Chatkit connection, we can rapidly start to add chat features. Seriously, it's so satifying. Leggo!
 
-## Step 7. Subscribe to messages
+## Step 7. Create a Chatkit room
+
+In the dashboard, go to the **Inspector** and create a room: 
+
+## Step 8. Component structure
 
 
-In fact, quickly, before going any further, let's setup a quick CSS layout:
+Going forward, we'll break each feature into a indepdent (reusable, if you want!) React components:
+
+
+We'll define each component as we go along but to make the tutorial a bit easier to follow, let's set out the basic page layout now by updating `ChatScreen`:
+
+
 
 
 ```diff
 import React, { Component } from 'react'
-import Chatkit from 'pusher-chatkit-client'
-import MessagesList from './components/MessagesList'
+import Chatkit from 'pusher-chatkit-client''
 
 class ChatScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentUser: {},
-      currentRoom: {},
-      messages: [],
-      usersWhoAreTyping: [],
+      currentUser: {}
     }
   }
 
@@ -405,93 +410,73 @@ class ChatScreen extends Component {
       .connect()
       .then(currentUser => {
         this.setState({ currentUser })
-        return currentUser.subscribeToRoom(
-          5599364,
-          {
-            newMessage: message => {
-              this.setState({
-                messages: [...this.state.messages, message],
-              })
-            }
-          },
-          100
-        )
-      })
-      .then(currentRoom => {
-        this.setState({ currentRoom })
       })
       .catch(error => console.error('error', error))
   }
   
   render() {
-    const styles = {
-      container: {
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        color: 'white',
-      },
-      header: {
-        backgroundImage:
-          'linear-gradient(to right, #2e646d, #2e646d, #2e646d, #2e646d, #2e646d)',
-        padding: 20,
-      },
-      chatContainer: {
-        display: 'flex',
-        flex: 1,
-      },
-      whosOnlineListContainer: {
-        width: '15%',
-        backgroundColor: '#2b303b',
-        backgroundImage:
-          'linear-gradient(to bottom, #336f78, #2d6a79, #296579, #296079, #2b5a78)',
-        padding: 20,
-      },
-      chatListContainer: {
-        width: '85%',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundImage:
-          'linear-gradient(to bottom, #437f86, #3e7a88, #3c7689, #3c7089, #3f6b88)',
-      },
-      chatList: {
-        padding: 20,
-        flex: 1,
-      },
-    }
-    return (
-      <div style={styles.container}>
-        <header style={styles.header}>
-          <h2>Chatly</h2>
-        </header>
-        <div style={styles.chatContainer}>
-          <aside style={styles.whosOnlineListContainer}>
-            ...
-          </aside>
-          <section style={styles.chatListContainer}>
-            <MessagesList
-              messages={this.state.messages}
-              style={styles.chatList}
-            />
-            <TypingIndicator usersWhoAreTyping={this.state.usersWhoAreTyping} />
-            <SendMessageForm
-              onSubmit={this.sendMessage}
-              onChange={this.sendTypingEvent}
-            />
-          </section>
-        </div>
-      </div>
-    )
++    const styles = {
++      container: {
++        height: '100vh',
++        display: 'flex',
++        flexDirection: 'column',
++        color: 'white',
++      },
++      header: {
++        padding: 20,
++      },
++      chatContainer: {
++        display: 'flex',
++        flex: 1,
++      },
++      whosOnlineListContainer: {
++        width: '15%',
++        padding: 20,
++      },
++      chatListContainer: {
++        width: '85%',
++        display: 'flex',
++        flexDirection: 'column',
++      },
++      chatList: {
++        padding: 20,
++        flex: 1,
++      },
++    }
++    return (
++      <div style={styles.container}>
++        <header style={styles.header}>
++          <h2>Chatly</h2>
++        </header>
++        <div style={styles.chatContainer}>
++          <aside style={styles.whosOnlineListContainer}>
++
++          </aside>
++          <section style={styles.chatListContainer}>
++          
++          </section>
++        </div>
++      </div>
++    )
   }
 }
 
 export default ChatScreen
 ```
 
+If you run the app now, you'll see the basic layout take place:
 
-Once you have a Chatkit connection, your chat - for the most part - becomes as simple as hooking up Chatkit events and their data to UI components. Here, let me show you.
 
-Create a `MessageList.js` file in `/src/components`:
+
+
+
+
+## Step 9. Subscribe to messages
+
+I am really excited to show you this. Now we have a `Chatkit` connection, building chat features become as simple as hooking up Chatkit events to UI components. Here, let me show you.
+
+First, create a `MessageList.js` component in `/src/components`:
+
 
 ```diff
 + import React, { Component } from 'react'
@@ -540,16 +525,116 @@ Create a `MessageList.js` file in `/src/components`:
 ```
 
 
-Then import and render it in `ChatScreen.js`:
-
-
-
-
+Then update `ChatScreen.js`:
 
 ```diff
-MessageList
-```
+import React, { Component } from 'react'
+import Chatkit from 'pusher-chatkit-client'
+import SendMessageForm from './components/SendMessageForm'
+import WhosOnlineList from './components/WhosOnlineList'
+import MessagesList from './components/MessagesList'
+import TypingIndicator from './components/TypingIndicator'
 
+class ChatScreen extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentUser: {},
++      currentRoom: {},
++      messages: []
+    }
+  }
+
+  componentDidMount () {
+    const chatManager = new Chatkit.ChatManager({
+      instanceLocator: 'YOUR INSTANCE LOCATOR',
+      userId: this.props.userId,
+      tokenProvider: new Chatkit.TokenProvider({
+        url: 'http://localhost:3001/authenticate',
+      }),
+    })
+
+    chatManager
+      .connect()
+      .then(currentUser => {
+        this.setState({ currentUser })
++        return currentUser.subscribeToRoom(
++          5599364,
++          {
++            newMessage: message => {
++              this.setState({
++                messages: [...this.state.messages, message],
++              })
++            },
++          },
++          100
++        )
++      })
++      .then(currentRoom => {
++        this.setState({ currentRoom })
++      })
+      .catch(error => console.error('error', error))
+  }
+
+  render() {
+    const styles = {
+      container: {
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        color: 'white',
+      },
+      header: {
+        backgroundImage:
+          'linear-gradient(to right, #2e646d, #2e646d, #2e646d, #2e646d, #2e646d)',
+        padding: 20,
+      },
+      chatContainer: {
+        display: 'flex',
+        flex: 1,
+      },
+      whosOnlineListContainer: {
+        width: '15%',
+        backgroundColor: '#2b303b',
+        backgroundImage:
+          'linear-gradient(to bottom, #336f78, #2d6a79, #296579, #296079, #2b5a78)',
+        padding: 20,
+      },
+      chatListContainer: {
+        width: '85%',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundImage:
+          'linear-gradient(to bottom, #437f86, #3e7a88, #3c7689, #3c7089, #3f6b88)',
+      },
++      chatList: {
++        padding: 20,
++        flex: 1,
+      },
+    }
+    return (
+      <div style={styles.container}>
+        <header style={styles.header}>
+          <h2>Chatly</h2>
+        </header>
+        <div style={styles.chatContainer}>
+          <aside style={styles.whosOnlineListContainer}>
+          </aside>
+          <section style={styles.chatListContainer}>
++            <MessagesList
++              messages={this.state.messages}
++              style={styles.chatList}
+            />
+          </section>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default ChatScreen
+
+```
 
 
 
