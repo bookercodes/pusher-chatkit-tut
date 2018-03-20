@@ -38,6 +38,8 @@ Alright, let's code!
 
 Rather than start from absoloute scratch, this walkthrough is based on a minimal starter template:
 
+![](https://github.com/bookercodes/pusher-chatkit-tut/blob/master/Screen%20Shot%202018-03-20%20at%2015.09.27.png?raw=true)
+
 As you will see, the starter termplate doesn't contain any interesting logic, just boilerplate we need to run a React application and a simple Node server. 
 
 Our client-side is based on the [Create React App template](https://github.com/facebook/create-react-app). The server uses Node. If you're unfamiliar with Node, don't worry. After the next section, we won't really touch the server.
