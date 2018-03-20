@@ -83,49 +83,49 @@ npm install --save pusher-chatkit-sever
 Then update `server.js`:
 
 ```diff
- const express = require('express')
- const bodyParser = require('body-parser')
- const cors = require('cors')
- +const Chatkit = require('pusher-chatkit-server')
- 
- const app = express()
- 
- +const chatkit = new Chatkit.default({
- +  instanceLocator: 'YOUR INSTANCE LOCATOR',
- +  key: 'YOUR KEY',
- +})
- 
- app.use(bodyParser.urlencoded({ extended: false }))
- app.use(bodyParser.json())
- app.use(cors())
+const express = require('express')
+const bodyParser = require('body-parser')
+const cors = require('cors')
++const Chatkit = require('pusher-chatkit-server')
 
-+ app.post('/users', (req, res) => {
-+   const { username } = req.body
-+   chatkit
-+     .createUser(username, username)
-+     .then(() => res.sendStatus(201))
-+     .catch(error => {
-+       if (error.error_type === 'services/chatkit/user/user_already_exists') {
-+         res.sendStatus(200)
-+       } else {
-+         res.status(error.statusCode).json(error)
-+       }
-+     })
-+ })
+const app = express()
 
-+ app.post('/authenticate', (req, res) => {
-+   const grant_type = req.body.grant_type
-+   res.json(chatkit.authenticate({ grant_type }, req.query.user_id))
-+ })
++const chatkit = new Chatkit.default({
++  instanceLocator: 'YOUR INSTANCE LOCATOR',
++  key: 'YOUR KEY',
++})
 
- const PORT = 3001
- app.listen(PORT, err => {
-   if (err) {
-     console.error(err)
-   } else {
-     console.log(`Running on port ${PORT}`)
-   }
- })
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(cors())
+
++app.post('/users', (req, res) => {
++  const { username } = req.body
++  chatkit
++    .createUser(username, username)
++    .then(() => res.sendStatus(201))
++    .catch(error => {
++      if (error.error_type === 'services/chatkit/user/user_already_exists') {
++        res.sendStatus(200)
++      } else {
++        res.status(error.statusCode).json(error)
++      }
++    })
++})
+
++app.post('/authenticate', (req, res) => {
++  const grant_type = req.body.grant_type
++  res.json(chatkit.authenticate({ grant_type }, req.query.user_id))
++})
+
+const PORT = 3001
+app.listen(PORT, err => {
+  if (err) {
+    console.error(err)
+  } else {
+    console.log(`Running on port ${PORT}`)
+  }
+})
 ```
 
 There's a lot to unpack here, starting from the top:
