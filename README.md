@@ -235,11 +235,12 @@ Starting from the top,
 * When `onUsernameSubmitted` is called we send a POST request to the `/users` route we defined earlier. If the request is successful, we update `this.state.username` so we can reference it later; otherwise, we `conosle.error` the error. 
 
 
-## Step 5. Rendering the ChatScreen
+## Step 5. Render ChatScreen
 
-When the user submits their name, we want to render the chat:
+At the moment, we render the `UsernameForm` but once the username has been submitted, we'll want to _transition_ to the a screen.
 
-Start by creating a container called `ChatScreen` in `/src/`:
+To do that, we first need to create a `ChatsScreen.js` component in `./src`:
+
 
 ```diff
 +import React, { Component } from 'react'
@@ -289,7 +290,7 @@ class App extends Component {
       .then(response => {
         this.setState({
           userId: username,
-+          currentScreen: 'ChatScreen'
++         currentScreen: 'ChatScreen'
         })
       })
       .catch(error => console.error('error', error))
@@ -308,10 +309,10 @@ class App extends Component {
 export default App
 ```
 
-Normally, you would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but because our app is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen` in the `render` function.
+* Normally, you would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but because our app is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen`
+* Remember how we updated `this.state.username` in the previous step? In the above snippet we pass it to `ChatScreen` 
 
-When we render `ChatScreen`, we pass `this.state.username` as a prop.  Now, `ChatScreen` has all the information needed to connect to Chatkit. Let's do that next...
-
+Now that `ChatScreen` has a username, we can connect to Chatkit and start to think about the core of our chat app.
 
 ## Step 6. Connect to Chatkit
 
