@@ -142,7 +142,7 @@ When someone loads the app, we want to ask them who they are:
 
 Once they hit **Submit**, we'll send their username to the server (to the `/users` route we just defined) and create a a Chatkit user if one doesn't exist. 
 
-To collect the user's name, create a component called `./UsernameForm.js` in in `src/components/`:
+To collect the user's name, create a component called `./UsernameForm.js` in in `./src/components/`:
 
 ```diff
 +import React, { Component } from 'react'
