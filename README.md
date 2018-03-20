@@ -72,7 +72,7 @@ While _most_ interactions will happen on the client, Chatkit also needs a server
 
 ![](https://i.imgur.com/9elZ5SQ.jpg)
 
-We won't authorise users in this tutorial, but we'll still need to define a route (like `/users`) that, when called, creates a Chatkit user.
+We won't authenticate users in this tutorial, but we'll still need to define a route that, when called, creates a Chatkit user.
 
 Start by installing [`pusher-chatkit-server`](https://www.npmjs.com/package/pusher-chatkit-server):
 
