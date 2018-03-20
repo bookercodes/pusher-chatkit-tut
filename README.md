@@ -1035,7 +1035,7 @@ Then (for the last time!) update `ChatScreen.js`:
 
 ```diff
 import SendMessageForm from './components/SendMessageForm'
-import WhosOnlineList from './components/WhosOnlineList'
++import WhosOnlineList from './components/WhosOnlineList'
 import MessagesList from './components/MessagesList'
 import TypingIndicator from './components/TypingIndicator'
 
@@ -1052,9 +1052,9 @@ class ChatScreen extends Component {
     this.sendTypingEvent = this.sendTypingEvent.bind(this)
   }
 
-  connectToChatkit() {
+  comonentDidMount () {
     const chatManager = new Chatkit.ChatManager({
-      instanceLocator: 'v1:us1:542391ba-ff28-4674-a4ad-a464fd59f9f6',
+      instanceLocator: 'YOUR INSTANCE LOCATOR',
       userId: this.props.userId,
       tokenProvider: new Chatkit.TokenProvider({
         url: 'http://localhost:3001/authenticate',
@@ -1085,20 +1085,17 @@ class ChatScreen extends Component {
                 ),
               })
             },
-            userCameOnline: () => {
-              console.log('userCameOnline')
-              this.forceUpdate()
-            },
-            userWentOffline: () => this.forceUpdate(),
-            userJoined: user => {
-              const currentRoom = this.state.currentUser.rooms.find(
-                room => room.id === this.state.currentRoom.id
-              )
-              this.setState({
-                currentRoom,
-              })
-              this.forceUpdate()
-            },
++            userCameOnline: () => this.forceUpdate(),
++            userWentOffline: () => this.forceUpdate(),
++            userJoined: user => {
++              const currentRoom = this.state.currentUser.rooms.find(
++                room => room.id === this.state.currentRoom.id
++              )
++              this.setState({
++                currentRoom,
++              })
++              this.forceUpdate()
++            },
           },
           100
         )
@@ -1107,10 +1104,6 @@ class ChatScreen extends Component {
         this.setState({ currentRoom })
       })
       .catch(error => console.error('error', error))
-  }
-
-  componentDidMount() {
-    this.connectToChatkit()
   }
 
   sendMessage(text) {
@@ -1128,39 +1121,7 @@ class ChatScreen extends Component {
 
   render() {
     const styles = {
-      container: {
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        color: 'white',
-      },
-      header: {
-        backgroundImage:
-          'linear-gradient(to right, #2e646d, #2e646d, #2e646d, #2e646d, #2e646d)',
-        padding: 20,
-      },
-      chatContainer: {
-        display: 'flex',
-        flex: 1,
-      },
-      whosOnlineListContainer: {
-        width: '15%',
-        backgroundColor: '#2b303b',
-        backgroundImage:
-          'linear-gradient(to bottom, #336f78, #2d6a79, #296579, #296079, #2b5a78)',
-        padding: 20,
-      },
-      chatListContainer: {
-        width: '85%',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundImage:
-          'linear-gradient(to bottom, #437f86, #3e7a88, #3c7689, #3c7089, #3f6b88)',
-      },
-      chatList: {
-        padding: 20,
-        flex: 1,
-      },
+      ...
     }
     return (
       <div style={styles.container}>
@@ -1169,10 +1130,10 @@ class ChatScreen extends Component {
         </header>
         <div style={styles.chatContainer}>
           <aside style={styles.whosOnlineListContainer}>
-            <WhosOnlineList
-              currentUser={this.state.currentUser}
-              users={this.state.currentRoom.users}
-            />
++            <WhosOnlineList
++              currentUser={this.state.currentUser}
++              users={this.state.currentRoom.users}
++            />
           </aside>
           <section style={styles.chatListContainer}>
             <MessagesList
@@ -1194,8 +1155,21 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
+* Using the `userCameOnline` and `userWentOffline` hooks we can detect when someone connects or disconnects to Chatkit
+* If someone _joins_ the room (i.e. connected for the first time), we need seperate logic
 
-## Step 12. Adding some colour (Styles)
+
+
+## Conclusion
+
+
+Woah, we're done:
+
+
+
+
+
+
 
 
 
