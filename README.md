@@ -56,9 +56,11 @@ npm install
 
 ## Step 2. Create a Chatkit instance
 
-Like I illustrated earlier, all chat data is sent through and managed by a _Chatkit instance_.
+Like I illustrated earlier, all chat data is sent through and managed by Chatkit instance.
 
-To create a Chatkit instance, head to the dashboard, hit **Create new**, then give your instance a name. I will call mine “React Chat Tutorial”:
+To create your own Chatkit instance, head to the dashboard, hit **Create new**, then give your instance a name. I will call mine “React Chat Tutorial”:
+
+![](https://github.com/bookercodes/pusher-chatkit-tut/blob/master/Screen%20Shot%202018-03-20%20at%2016.22.17.png?raw=true)
 
 In the Keys tab, take note of the **Instance Locator** and **Keys**. We'll need these both in the next section.
 
