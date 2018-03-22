@@ -313,16 +313,10 @@ class App extends Component {
 export default App
 ```
 
-Here's what changed,
-
-
-* The `ChatScreen` component is pretty minimal at the moment but as we progress, it will serve as the main container for our chat app
-* _Typically_, you would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but because our app is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen`
-* When we render `ChatScreen`, we pass `this.state.username` as a prop. 
+* Typically, you would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but because our app is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen`
+* There isn't much to `ChatScreen` at the moment but as we progres, it will serve as the main container for our chat app. In fact, let's connect to Chatkit now.
 
 ## Step 6. Connect to Chatkit
-
-Now we have a way to render `ChatScreen` and have access to the current user's name, we can connect to Chatkit from the client.
 
 Earlier, we installed `pusher-chatkit-server`. Now we're in client-land, you'll need to install [`pusher-chatkit-client`](https://www.npmjs.com/search?q=pusher-chatkit-client) too:
 
