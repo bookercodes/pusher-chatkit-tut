@@ -42,7 +42,7 @@ Rather than start from absoloute scratch, this walkthrough is based on a minimal
 
 As you will see, the starter termplate doesn't contain any interesting logic, just boilerplate we need to run a React application and a simple Node server. 
 
-Our client-side is based on the [Create React App template](https://github.com/facebook/create-react-app). The server uses Node. If you're unfamiliar with Node, don't worry. After the next section, we won't really touch the server.
+"Sever? No one mentioned a server!" The server uses Node. If you're unfamiliar with Node, don't worry. After the next section, we won't really touch the server.
 
 To get started, download the starter template then run `npm install`:
 
@@ -55,6 +55,8 @@ npm install
 (This tutorial assumes the use of `npm`, but the equivalent `yarn` commands will work as well.)
 
 ## Step 2. Create a Chatkit instance
+
+Now you've downloaded the starter tempalte, let's create a Chatkit instance.
 
 Like I illustrated earlier, all chat data is sent through and managed by Chatkit.
 
