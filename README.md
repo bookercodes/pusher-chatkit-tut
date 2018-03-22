@@ -374,18 +374,28 @@ export default ChatScreen
 
 What is happening here?
 
-* Once `ChatScreen` has been mounted (`onComponentDidMount`), we instntiate `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`
+* Well, once `ChatScreen` has been mounted (that is, `onComponentDidMount`), we instantiate `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`
 * The `TokenProvider` points to the `/authenticate` route, which we defined earlier
 * Once `ChatManager` has been instantiated, we call `connect`
-* `connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you you missed something.
-
-I am quite excited about the rest of the tutoral, and I hope you are too! Now that we have our boilerplate and a Chatkit connection, we can rapidly start to add chat features. Seriously, it's so satifying. Leggo!
+* `connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you you missed something
 
 ## Step 7. Create a Chatkit room
 
-In the dashboard, go to the **Inspector** and create a room: 
+When using Chatkit, all messages are sent to a Chatkit room.
+
+In most cases, your app will have several rooms which you create programatially (on the server _or_ client using `createRoom`).
+
+Because our app only needs one room, we will create it in the dashboard.
+
+In the dashboard, go to **Inspector** and create a user called **Admin**:
+
+Then, create a room called **General**, making sure to note the Room id once you hit save:
+
+create a user called `admin` then a room called `General`. Make sure to note the room ID once you press Create:
 
 ## Step 8. Component structure
+
+I am quite excited about the rest of the tutoral, and I hope you are too! Now that we have our boilerplate and a Chatkit connection, we can rapidly start to add chat features. Seriously, it's so satifying. Leggo!
 
 
 Going forward, we'll break each feature into a indepdent (reusable, if you want!) React components:
