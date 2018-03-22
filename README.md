@@ -10,7 +10,7 @@ If you think this sounds like a lot to tackle in one tutorial, you would normall
 
 ## Good to know
 
-* Before delving into this walkthrough, it would be good to have a basic understanding of [React](https://reactjs.org/tutorial/tutorial.html)
+* Before delving into this walkthrough, it would be good to have a basic understanding of [React](https://reactjs.org/tutorial/tutorial.html)a
 
 
 ## What is Chatkit?
@@ -386,9 +386,9 @@ What's happening here?
 
 When using Chatkit, all messages are sent to a Chatkit room.
 
-Rooms can be created programatically (on the sever or client using `createRoom`) or in the dashboard Inspector tab.
+Rooms can be created programatically (on the sever or client using `createRoom`), or in the dashboard Inspector tab.
 
-Creating rooms from the Inspector isn't _really_ , In most cases, you should create rooms progamatically but for development purposes, we can also create rooms from the dashboard Inspector.
+Creating rooms from the Inspector isn't _really_ a good practice (it's mainly intended for testing) but we're going to do it anyway to keep things simple.
 
 In the dashboard, go to the **Inspector** tab and create a user with any name. I will call mine "Admin":
 
@@ -396,27 +396,19 @@ Then, create a room called "General":
 
 It is really imporatnt to note the unique **room ID** highlighted above. 
 
-**Inspector** tab.  
-
-It's not a best practice to create rooms in the **Inspector**, as the Inspetor is motly intended for debugging. That being said, to keep things simple, we will use it anyway.
-
-In the dashboard, go to the **Inspector** tab and create a user with any name. I will call mine **Admin**:
-
-Then, create a room called **General**:
-
-Make sure to note the room ID as this is vey important for the next steps.
+Done? Awesome, good job!
 
 ## Step 8. Component structure
 
-I am quite excited about the rest of the tutoral, and I hope you are too! Now that we have our boilerplate and a Chatkit connection, we can rapidly start to add chat features. Seriously, it's so satifying. Leggo!
+This step marks a significant point in the walkthrough. 
 
+Now we have our "boilerplate" in place (including a Chakit connection), we can rapidly start to build out chat features. 
 
-Going forward, we'll break each feature into a indepdent (reusable, if you want!) React components:
+Going forward, what we're going to do is braek down each feature (messages, typing indicators, and our "Who's online" list) into indepdendant (reusable, if you want!) React components:
 
+<ILLUSTRATION OF ALL THE REACT COMPONENTS>
 
-We'll define each component as we go along but to make the tutorial a bit easier to follow, let's set out the basic page layout now by updating `ChatScreen`:
-
-
+We'll be definig each component as we go along but to make the tutorial a bit easier to follow, let's create the basic page layout now by updating `ChatScreen`:
 
 
 ```diff
