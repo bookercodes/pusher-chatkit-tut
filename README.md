@@ -42,7 +42,7 @@ Rather than start from absoloute scratch, this walkthrough is based on a minimal
 
 As you will see, the starter termplate doesn't contain any interesting logic, just boilerplate we need to run a React application and a simple Node server. 
 
-"Sever? No one mentioned a server!" The server uses Node. If you're unfamiliar with Node, don't worry. After the next section, we won't really touch the server.
+"Sever? No one mentioned a server!" If you're not too familiar with [Node](https://nodejs.org/en/), don't worry. After the next section, we won't really touch the server.
 
 To get started, download the starter template then run `npm install`:
 
