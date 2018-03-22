@@ -232,16 +232,18 @@ export default App
 
 Starting from the top,
 
-* First, we import the `UsernameForm` component. It probably looks familiar to you because it uses a common React pattern called controlled components. You can read more about controlled components [here](https://reactjs.org/docs/forms.html)
-* In the `render` function we - you guessed it - _render_ the `UsernameForm` and hook up the `onUsernameSubmitted` event handler
-* When `onUsernameSubmitted` is called we send a POST request to the `/users` route we just defined. If the request is successful, we update `this.state.username` so we can reference it later; otherwise, we `conosle.error` the error
+* First, we import the `UsernameForm` component. It probably looks familiar to you because it uses a common React pattern called controlled components. You can read more about controlled components and React forms [here](https://reactjs.org/docs/forms.html)
+* In the `render` function we - you guessed it - render the `UsernameForm` and hook up the `onUsernameSubmitted` event handler
+* When `onUsernameSubmitted` is called, we send a POST request to the `/users` route we just defined. If the request is successful, we update `this.state.username` so we can reference it later; otherwise, we `conosle.error` the error
 
 
 ## Step 5. Render ChatScreen
 
 At the moment, we render the `UsernameForm` and it occupies the entire screen:
 
-Once the username has been submitted, we'll want to _transition_ to a different screen, the _chat screen_.
+<Animation highlighting the screen>
+
+Once the username has been submitted, we'll want to transition to a different screen, the chat screen.
 
 To do that, we first need to create a `ChatsScreen.js` component in `./src`:
 
@@ -267,7 +269,7 @@ To do that, we first need to create a `ChatsScreen.js` component in `./src`:
 +export default ChatScreen
 ```
 
-Then, update `App.js`:
+Then update `App.js`:
 
 ```diff
 import React, { Component } from 'react'
@@ -312,19 +314,20 @@ class App extends Component {
 
 export default App
 ```
+There's a few things to note here,
 
 * Typically, you would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but because our app is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen`
-* There isn't much to `ChatScreen` at the moment but as we progres, it will serve as the main container for our chat app. In fact, let's connect to Chatkit now.
+* There isn't much to `ChatScreen` at the moment but as we progres, it will serve as the main container for our chat. In fact, let's connect to Chatkit now.
 
 ## Step 6. Connect to Chatkit
 
-Earlier, we installed `pusher-chatkit-server`. Now we're in client-land, you'll need to install [`pusher-chatkit-client`](https://www.npmjs.com/search?q=pusher-chatkit-client) too:
+Earlier, we installed `pusher-chatkit-server`. Now we're in client-land, you'll need to install [`pusher-chatkit-client`](https://www.npmjs.com/search?q=pusher-chatkit-client) as well:
 
 ```
 npm install --save pusher-chatkit-client
 ```
 
-Then, update `ChatScreen.js`:
+Then update `ChatScreen.js`:
 
 ```diff
 import React, { Component } from 'react'
@@ -372,26 +375,36 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-What is happening here?
+What's happening here?
 
-* Well, once `ChatScreen` has been mounted (that is, `onComponentDidMount`), we instantiate `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`
+* First, we instantaite our Chatkit `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`
 * The `TokenProvider` points to the `/authenticate` route, which we defined earlier
-* Once `ChatManager` has been instantiated, we call `connect`
-* `connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you you missed something
+* Once `ChatManager` has been initialised, we can call `connect`
+* `connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you you missed something.
 
 ## Step 7. Create a Chatkit room
 
 When using Chatkit, all messages are sent to a Chatkit room.
 
-In most cases, your app will have several rooms which you create programatially (on the server _or_ client using `createRoom`).
+Rooms can be created programatically (on the sever or client using `createRoom`) or in the dashboard Inspector tab.
 
-Because our app only needs one room, we will create it in the dashboard.
+Creating rooms from the Inspector isn't _really_ , In most cases, you should create rooms progamatically but for development purposes, we can also create rooms from the dashboard Inspector.
 
-In the dashboard, go to **Inspector** and create a user called **Admin**:
+In the dashboard, go to the **Inspector** tab and create a user with any name. I will call mine "Admin":
 
-Then, create a room called **General**, making sure to note the Room id once you hit save:
+Then, create a room called "General":
 
-create a user called `admin` then a room called `General`. Make sure to note the room ID once you press Create:
+It is really imporatnt to note the unique **room ID** highlighted above. 
+
+**Inspector** tab.  
+
+It's not a best practice to create rooms in the **Inspector**, as the Inspetor is motly intended for debugging. That being said, to keep things simple, we will use it anyway.
+
+In the dashboard, go to the **Inspector** tab and create a user with any name. I will call mine **Admin**:
+
+Then, create a room called **General**:
+
+Make sure to note the room ID as this is vey important for the next steps.
 
 ## Step 8. Component structure
 
