@@ -234,12 +234,14 @@ Starting from the top,
 
 * First, we import the `UsernameForm` component. It probably looks familiar to you because it uses a common React pattern called controlled components. You can read more about controlled components [here](https://reactjs.org/docs/forms.html)
 * In the `render` function we - you guessed it - _render_ the `UsernameForm` and hook up the `onUsernameSubmitted` event handler
-* When `onUsernameSubmitted` is called we send a POST request to the `/users` route we defined earlier. If the request is successful, we update `this.state.username` so we can reference it later; otherwise, we `conosle.error` the error. 
+* When `onUsernameSubmitted` is called we send a POST request to the `/users` route we just defined. If the request is successful, we update `this.state.username` so we can reference it later; otherwise, we `conosle.error` the error
 
 
 ## Step 5. Render ChatScreen
 
-At the moment, we render the `UsernameForm` but once the username has been submitted, we'll want to _transition_ to the a screen.
+At the moment, we render the `UsernameForm` and it occupies the entire screen:
+
+Once the username has been submitted, we'll want to _transition_ to a different screen, the _chat screen_.
 
 To do that, we first need to create a `ChatsScreen.js` component in `./src`:
 
@@ -311,12 +313,16 @@ class App extends Component {
 export default App
 ```
 
-* Normally, you would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but because our app is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen`
-* Remember how we updated `this.state.username` in the previous step? In the above snippet we pass it to `ChatScreen` 
+Here's what changed,
 
-Now that `ChatScreen` has a username, we can connect to Chatkit and start to think about the core of our chat app.
+
+* The `ChatScreen` component is pretty minimal at the moment but as we progress, it will serve as the main container for our chat app
+* _Typically_, you would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but because our app is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen`
+* When we render `ChatScreen`, we pass `this.state.username` as a prop. 
 
 ## Step 6. Connect to Chatkit
+
+Now we have a way to render `ChatScreen` and have access to the current user's name, we can connect to Chatkit from the client.
 
 Earlier, we installed `pusher-chatkit-server`. Now we're in client-land, you'll need to install [`pusher-chatkit-client`](https://www.npmjs.com/search?q=pusher-chatkit-client) too:
 
