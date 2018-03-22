@@ -493,15 +493,16 @@ export default ChatScreen
 If you run the app now, you'll see the basic layout take place:
 
 
-
-
+I want to write a seperaet tutorial on building hcat layouts with Flexbox which I will link to here in the future. In the meantime, if you want to learn more about Flexbox I highly reccomend this resource. 
 
 
 ## Step 9. Subscribe to messages
 
-I am really excited to show you this. Now we have a `Chatkit` connection, building chat features become as simple as hooking up Chatkit events to UI components. Here, let me show you.
+I am really excited to show you this!
 
-First, create a `MessageList.js` component in `/src/components`:
+Now we have a `Chatkit` connection, building chat features become as simple as hooking up Chatkit events to UI components. Here, let me show you.
+
+First, create a stateless `MessageList.js` component in `/src/components`:
 
 
 ```diff
@@ -549,7 +550,6 @@ First, create a `MessageList.js` component in `/src/components`:
 + 
 + export default MessagesList
 ```
-
 
 Then update `ChatScreen.js`:
 
@@ -662,21 +662,18 @@ export default ChatScreen
 
 ```
 
-* Once you connect to Chatkit you get a `currentUser` object that represents... the current connected user
+* Once you connect to Chatkit you get a `currentUser` object that represents the current connected user
 * Chatkit is "user-driven" meaning most if not all interactions happen on the `currentUser`
-* In this case we call `subscribeToRoom` on the `currentUser` (`currentUser.subscribeToRoom`)
-* `subscribeToRoom` takes an event handler called `onNewMessage` that is fired each time a new message arrives. Because we specific `100`, it is also called _retroactively_ for up to 100 most recent messages. This allows you to easily show users their recent messaages and introduce context around the current conversation that might be happening
-* It is a fair chunk of code but in pracice, al lwe're doing is taking those new messages` updating our container state, and rendering them in the `MessageList` we defined before.
-
-
-
-
-
-
+* In this case, we call `subscribeToRoom` on the `currentUser` (`currentUser.subscribeToRoom`)
+* `subscribeToRoom` takes an event handler called `onNewMessage` that is called in real-time each time a new message arrives
+* Because we specified `100`, `onNewMessage` is also called _retroactively_ for up to 100 most recent messages. This allows you to effortlessly show your user their recent chat history
+* There is a fair amount of code here but once you distill it, all we're doing is taking new messages and updating the cotnainer state. When the state is updated, the new messages are rendered automatically. The _significant_ chat-related code couldn't be more minimal
 
 ## Step 9. Sendmessages
 
-Come on, we're on a roll. Let's allow users to send messages by first creating a SendMessagEForm.js comoonent in `/src/comonents`:
+We're on a roll!
+
+Next let's allow users to send messages by first creating a `SendMessageForm.js` component in `./src/components`:
 
 ```diff
 + import React, { Component } from 'react'
@@ -742,7 +739,7 @@ Come on, we're on a roll. Let's allow users to send messages by first creating a
 + export default SendMessageForm
 ```
 
-And (you guessed it!), update `ChatScreen.js`:
+Then (you guessed it!), update `ChatScreen.js`:
 
 ```
 import React, { Component } from 'react'
@@ -830,8 +827,10 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-* The `SendMessageForm` component is similar to `WhatIsYourUsernameForm` we defined earlier, a React form with controlled components
-* When the form is submitted, we access `currentUser` via `this.state` and call `sendMessage` (rememnber, most interactions happen on `currentUser`)
+* The `SendMessageForm` component is similar to the `WhatIsYourUsernameForm` component we defined earlier. That is, a standard React form
+* When the form is submitted, we access `currentUser` via `this.state` and call `sendMessage` (remember, most interactions happen on `currentUser`)
+
+Hopefully you can see a pattern emerge. Our `ChatScreen` container manages our appliation state, which we mostly udpate using simple Chatkit events.
 
 ## Typing indicators
 
