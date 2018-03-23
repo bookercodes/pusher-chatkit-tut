@@ -390,9 +390,7 @@ In the dashboard, head to the **Inspector** tab and create a user with any name.
 
 Then, create a room called "General":
 
-It is really imporatnt to note the unique **room ID** highlighted above. 
-
-Done? Awesome, good job!
+It is really important to note the unique **room ID** highlighted above. 
 
 ## Step 8. Component structure
 
