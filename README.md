@@ -654,7 +654,7 @@ export default ChatScreen
 
 ```
 
-From the top now,
+Let's break it down:
 
 * Once you connect to Chatkit you get a `currentUser` object that represents the current connected user
 * Chatkit is "user-driven" meaning most if not all interactions happen on the `currentUser`
