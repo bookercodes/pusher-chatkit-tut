@@ -315,7 +315,8 @@ class App extends Component {
 
 export default App
 ```
-Again, starting from the top:
+
+There's a few things to note here:
 
 * Typically, you would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but because our app is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen`
 * There isn't much to `ChatScreen` at the moment but as we progres, it will serve as the main container for our chat. In fact, let's connect to Chatkit now.
@@ -376,7 +377,7 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-There's a few things to note here,
+Again, starting from the top:
 
 * First, we instantaite our Chatkit `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`
 * The `TokenProvider` points to the `/authenticate` route, which we defined earlier
