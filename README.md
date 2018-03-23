@@ -13,7 +13,7 @@ However, because we'll use [Chatkit](pusher.com/chatkit), we can more or less fo
 
 ## Good to know
 
-* Before delving into this walkthrough, it would be good to have a basic understanding of [React](https://reactjs.org/tutorial/tutorial.html)
+Before delving into this walkthrough, it would be good to have a basic understanding of [React](https://reactjs.org/tutorial/tutorial.html)
 
 
 ## What is Chatkit?
