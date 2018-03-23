@@ -825,9 +825,7 @@ export default ChatScreen
 * The `SendMessageForm` component is similar to the `WhatIsYourUsernameForm` component we defined earlier (just a standard React form)
 * When the form is submitted, we access `currentUser` via `this.state` and call `sendMessage` (remember, most interactions happen on `currentUser`)
 
-Hopefully you can start to see a pattern emerge.
-
-Our `ChatScreen` container manages our appliation state, which we update based on simple Chatkit events. 
+Hopefully you can start to see a pattern emerge. Our `ChatScreen` container manages our appliation state, which we update based on simple Chatkit events. 
 
 ## Typing indicators
 
