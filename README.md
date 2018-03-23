@@ -1,16 +1,19 @@
+
 # Build a Chat App with React and Pusher Chatkit
 
-In this tutorial, you’ll learn how to build a chat app with React and [Chatkit](https://pusher.com/chatkit). When we're done, we'll have a chat application complete with **Typing indicators**, a **"Who's online" list**, and **message history**: 
+In this tutorial, you’ll learn how to build a chat app with React and [Chatkit](https://pusher.com/chatkit). 
 
-<ANIMATION OF FINAL DEMO>
-  
-  
+When we're done, we'll have a chat application complete with **typing indicators**, a **"who's online" list**, and **message history**: 
 
-If you think this sounds like a lot to tackle in one tutorial, you would normally be right! However, because we're going to use [Chatkit](pusher.com/chatkit), we can more or less focus exclusively on the front-end React code while Chatkit does the heavy lifting.
+[Animation of final demo]
+
+If you think this sounds like a lot to tackle in one tutorial, you would normally be right! 
+
+However, because we'll use [Chatkit](pusher.com/chatkit), we can more or less focus exclusively on the front-end React code while Chatkit does the heavy lifting.
 
 ## Good to know
 
-* Before delving into this walkthrough, it would be good to have a basic understanding of [React](https://reactjs.org/tutorial/tutorial.html)a
+* Before delving into this walkthrough, it would be good to have a basic understanding of [React](https://reactjs.org/tutorial/tutorial.html)
 
 
 ## What is Chatkit?
@@ -30,7 +33,7 @@ Using our cross-platform SDKs, all chat data is sent through our hosted API wher
 
 You'll never have to worry about scale or infrastructure, we take care of it all for you.
 
-Perhaps the best way to learn Chatkit is to start building, so I highly reccomend you follow along. Along the way, you'll learn best practices when using Chatkit with React.
+Perhaps the best way to learn Chatkit is to start building so I highly reccomend you follow along. Along the way, you'll learn best practices when using Chatkit with React.
 
 Alright, let's code!
 
@@ -42,7 +45,7 @@ Rather than start from absoloute scratch, this walkthrough is based on a minimal
 
 As you will see, the starter termplate doesn't contain any interesting logic, just boilerplate we need to run a React application and a simple Node server. 
 
-"Sever? No one mentioned a server!" If you're not too familiar with [Node](https://nodejs.org/en/), don't worry. After the next section, we won't really touch the server.
+"Sever? No one mentioned a server!" If you're not too familiar with [Node](https://nodejs.org/en/), don't worry 😊. After the next section, we won't really touch the server.
 
 To get started, download the starter template then run `npm install`:
 
@@ -56,20 +59,18 @@ npm install
 
 ## Step 2. Create a Chatkit instance
 
-Now you've downloaded the starter tempalte, let's create a Chatkit instance.
+Now you've downloaded the starter template, let's create a Chatkit instance.
 
-Like I illustrated earlier, all chat data is sent through and managed by Chatkit.
-
-To create your own Chatkit instance, head to the dashboard, hit **Create new**, then give your instance a name. I will call mine “React Chat Tutorial”:
+To create your own Chatkit instance, head to the dashboard, hit **Create new** then give your instance a name. I will call mine “React Chat Tutorial”:
 
 ![](https://github.com/bookercodes/pusher-chatkit-tut/blob/master/Screen%20Shot%202018-03-20%20at%2016.22.17.png?raw=true)
 
-In the Keys tab, take note of your **Instance Locator** and **Key**. We'll need them both in the next section.
+In the **Keys** tab, take note of your **Instance Locator** and **Key**. We'll need them both in the next section.
 
 
 ## Step 3. Setup the server
 
-While _most_ interactions will happen on the client, Chatkit also needs a server component to create and manage users securely:
+While most interactions will happen on the client, Chatkit also needs a server component to create and manage users securely:
 
 ![](https://i.imgur.com/9elZ5SQ.jpg)
 
@@ -241,9 +242,9 @@ Starting from the top,
 
 At the moment, we render the `UsernameForm` and it occupies the entire screen:
 
-<Animation highlighting the screen>
+[Animation highlighting the screen]
 
-Once the username has been submitted, we'll want to transition to a different screen, the chat screen.
+Once the username has been submitted, we'll want to transition to a different screen - namely, the chat screen.
 
 To do that, we first need to create a `ChatsScreen.js` component in `./src`:
 
@@ -308,13 +309,13 @@ class App extends Component {
 +    }
 +    if (this.state.currentScreen === 'Chatscreen') {
 +      return <ChatScreen userId={this.state.userId} /> 
-+    }
++    }
   }
 }
 
 export default App
 ```
-There's a few things to note here,
+Again, starting from the top:
 
 * Typically, you would use a router like [react-router](https://www.npmjs.com/package/react-router) to transition screens but because our app is quite simple, we update `this.state.currentScreen` and conditionally render `UsernameForm` or `ChatScreen`
 * There isn't much to `ChatScreen` at the moment but as we progres, it will serve as the main container for our chat. In fact, let's connect to Chatkit now.
@@ -375,7 +376,7 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-What's happening here?
+There's a few things to note here,
 
 * First, we instantaite our Chatkit `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`
 * The `TokenProvider` points to the `/authenticate` route, which we defined earlier
@@ -388,9 +389,9 @@ When using Chatkit, all messages are sent to a Chatkit room.
 
 Rooms can be created programatically (on the sever or client using `createRoom`), or in the dashboard Inspector tab.
 
-Creating rooms from the Inspector isn't _really_ a good practice (it's mainly intended for testing) but we're going to do it anyway to keep things simple.
+Creating rooms from the Inspector isn't really a good practice (it's mainly intended for testing) but we're going to do it anyway to keep things simple.
 
-In the dashboard, go to the **Inspector** tab and create a user with any name. I will call mine "Admin":
+In the dashboard, head to the **Inspector** tab and create a user with any name. I will call mine "Admin":
 
 Then, create a room called "General":
 
@@ -404,12 +405,11 @@ This step marks a significant point in the walkthrough.
 
 Now we have our "boilerplate" in place (including a Chakit connection), we can rapidly start to build out chat features. 
 
-Going forward, what we're going to do is braek down each feature (messages, typing indicators, and our "Who's online" list) into indepdendant (reusable, if you want!) React components:
+Going forward, we'll break down each feature into indepdendant (reusable, if you want!) React components:
 
-<ILLUSTRATION OF ALL THE REACT COMPONENTS>
+[Illustration of the React component structure]
 
-We'll be definig each component as we go along but to make the tutorial a bit easier to follow, let's create the basic page layout now by updating `ChatScreen`:
-
+We will create each component as we go along but to make the tutorial a bit easier to follow, let's set out the basic component layout now:
 
 ```diff
 import React, { Component } from 'react'
@@ -493,8 +493,7 @@ export default ChatScreen
 If you run the app now, you'll see the basic layout take place:
 
 
-I want to write a seperaet tutorial on building hcat layouts with Flexbox which I will link to here in the future. In the meantime, if you want to learn more about Flexbox I highly reccomend this resource. 
-
+Awesome.
 
 ## Step 9. Subscribe to messages
 
@@ -662,18 +661,20 @@ export default ChatScreen
 
 ```
 
+From the top now,
+
 * Once you connect to Chatkit you get a `currentUser` object that represents the current connected user
 * Chatkit is "user-driven" meaning most if not all interactions happen on the `currentUser`
 * In this case, we call `subscribeToRoom` on the `currentUser` (`currentUser.subscribeToRoom`)
 * `subscribeToRoom` takes an event handler called `onNewMessage` that is called in real-time each time a new message arrives
 * Because we specified `100`, `onNewMessage` is also called _retroactively_ for up to 100 most recent messages. This allows you to effortlessly show your user their recent chat history
-* There is a fair amount of code here but once you distill it, all we're doing is taking new messages and updating the cotnainer state. When the state is updated, the new messages are rendered automatically. The _significant_ chat-related code couldn't be more minimal
+* There is a fair amount of code here but once you break it down, all we're doing is taking new messages and updating the React state.  The significant chat-related code couldn't be more minimal
 
-## Step 9. Sendmessages
+## Step 9. Sending messages
 
 We're on a roll!
 
-Next let's allow users to send messages by first creating a `SendMessageForm.js` component in `./src/components`:
+Next, let's allow users to send messages by first creating a `SendMessageForm.js` component in `./src/components`:
 
 ```diff
 + import React, { Component } from 'react'
@@ -739,9 +740,9 @@ Next let's allow users to send messages by first creating a `SendMessageForm.js`
 + export default SendMessageForm
 ```
 
-Then (you guessed it!), update `ChatScreen.js`:
+Then  - you guessed it - update `ChatScreen.js`:
 
-```
+```diff
 import React, { Component } from 'react'
 import Chatkit from 'pusher-chatkit-client'
 + import SendMessageForm from './components/SendMessageForm'
@@ -827,16 +828,21 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-* The `SendMessageForm` component is similar to the `WhatIsYourUsernameForm` component we defined earlier. That is, a standard React form
+
+* The `SendMessageForm` component is similar to the `WhatIsYourUsernameForm` component we defined earlier (just a standard React form)
 * When the form is submitted, we access `currentUser` via `this.state` and call `sendMessage` (remember, most interactions happen on `currentUser`)
 
-Hopefully you can see a pattern emerge. Our `ChatScreen` container manages our appliation state, which we mostly udpate using simple Chatkit events.
+Hopefully you can start to see a pattern emerge.
+
+Our `ChatScreen` container manages our appliation state, which we update based on simple Chatkit events. 
 
 ## Typing indicators
 
-Realtime Typing indicators can be a bit tricky to implement on your own. You have to manage additional web sockets, chat state and wire it all together. With Chatkit, it's two fundamental lines.
+If you've ever tired to implement your own typing indicators you'll know it can be tricky. In general, more features means more data and more connections to manage. 
 
-Start by creating a `TypingIndicator.js` component in `/src/components`, something simpl just to render the name of those typing:
+With Chatkit, you can add typing indicators with two fundamental lines of code. 
+
+Start by creating a  `TypingIndicator.js` component in `/src/components`:
 
 ```diff
 +import React, { Component } from 'react'
@@ -974,16 +980,19 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-* Like I mentioned, typing indicators come down to two fundamental actions: Calling `currentUser.userIsTyping` when the user is typing (`onChange`) and then listening to `userStartedTyping` and `userStoppedTyping`
-* When a user starts typing those events are fired and we update our application state
-* You may have noticed that we never tell Chatkit when the `currentUsers` stops typing . This is by design. If Chatkit doesn't receive an `userIsTyping` call after a few seconds, it assumes the user stopped typing and informs all ove rclients. In practice, this is raelly slick.
+* Typing indicators come down to two fundamental actions: Calling `currentUser.userIsTyping` when the user is typing (`onChange`) and then listening to `userStartedTyping` and `userStoppedTyping`
+* You don't have to tell Chatkit when when someone stops typing by design
+* If Chatkit doesn't receive a `userIsTyping` event after a few seconds, it assumes the user has stopped typing. In practice, it's really slick 
+* I also want to point out that the `userStartedTyping` and `userStoppedTyping` events are never fired for the user who is typing. If you want to test the typing indicators you'll need to open two windows side by side
 
 
 ## Step 10. Who's online 
 
-Can you feel the momentum? We're on a roll! To finish up the chat app, let's use Chatkit's "Who's online" feature to render a list of users and their real-time online stauts.
+Can you feel the momentum? We're on a roll 🙌
 
-Start by creating a `WhosOnlineList.js` compoonent in `/src/components`:
+To finish up the chat app, let's use Chatkit's "who's online" feature to render a list of users and their real-time online status.
+
+Start by creating a `WhosOnlineList.js` component in `/src/components`:
 
 ```diff
 import React, { Component } from 'react'
@@ -1055,7 +1064,7 @@ class WhosOnlineList extends Component {
 export default WhosOnlineList
 ```
 
-Then (for the last time!) update `ChatScreen.js`:
+Then - for the last time - update `ChatScreen.js`:
 
 
 ```diff
@@ -1180,15 +1189,17 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-* Using the `userCameOnline` and `userWentOffline` hooks we can detect when someone connects or disconnects to Chatkit
-* If someone _joins_ the room (i.e. connected for the first time), we need seperate logic
+* With Chatkit you can always access a list of users and their online status with `currentRoom.users`
+* When users come online (`userCameOnline`) or go offline (`userWentOffline`) we call `forceUpdate` which makes React revaluate `currentRoom.users` and update the UI
+* We also need to call `forceUpdate` when new users join (`userJoined`)
 
 
+Again it really boils down to wiring some simple data and events to React components and that is all, folks!
 
 ## Conclusion
 
 
-Woah, we're done:
+
 
 
 
