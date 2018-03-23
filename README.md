@@ -663,7 +663,7 @@ Let's break it down:
 * Because we specified `100`, `onNewMessage` is also called _retroactively_ for up to 100 most recent messages. This allows you to effortlessly show your user their recent chat history
 * There is a fair amount of code here but once you break it down, all we're doing is taking new messages and updating the React state.  The significant chat-related code couldn't be more minimal
 
-## Step 9. Sending messages
+## Step 10. Sending messages
 
 We're on a roll!
 
@@ -827,9 +827,9 @@ export default ChatScreen
 
 Hopefully you can start to see a pattern emerge. Our `ChatScreen` container manages our appliation state, which we update based on simple Chatkit events. 
 
-## Typing indicators
+## Step 11. Typing indicators
 
-If you've ever tired to implement your own typing indicators you'll know it can be tricky. In general, more features means more data and more connections to manage. 
+If you've ever tired to implement your own typing indicators you'll know it can be tricky. In general, more real-time features means more data and more connections to manage. 
 
 With Chatkit, you can add typing indicators with two fundamental lines of code. 
 
@@ -856,7 +856,7 @@ Start by creating a  `TypingIndicator.js` component in `/src/components`:
 +export default TypingIndicator
 ```
 
-Then we'll update `ChatScreen.js`:
+Then update `ChatScreen.js`:
 
 ```diff
 import React, { Component } from 'react'
@@ -971,15 +971,14 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-* Typing indicators come down to two fundamental actions: Calling `currentUser.userIsTyping` when the user is typing (`onChange`) and then listening to `userStartedTyping` and `userStoppedTyping`
-* You don't have to tell Chatkit when when someone stops typing by design
-* If Chatkit doesn't receive a `userIsTyping` event after a few seconds, it assumes the user has stopped typing. In practice, it's really slick 
-* I also want to point out that the `userStartedTyping` and `userStoppedTyping` events are never fired for the user who is typing. If you want to test the typing indicators you'll need to open two windows side by side
+* Like I mentioned, typing indicators boil down to two fundamental actions: Calling `currentUser.userIsTyping` when the current user starts typing (normally `onChange`), and then listening to `userStartedTyping` and `userStoppedTyping` events
+* You don't have to tell Chatkit when when someone stops typing by design. If Chatkit doesn't receive a `userIsTyping` event after a few seconds, it assumes the user has stopped typing. In practice, it's really slick 
+* It's also worth noting that `userStartedTyping` and `userStoppedTyping` events are never fired for the current user who's typing by design. If you want to test the typing indicators, you'll need to open two windows side by side
 
 
 ## Step 10. Who's online 
 
-Can you feel the momentum? We're on a roll 🙌
+Can you feel the momentum? We're on a roll 🙌!
 
 To finish up the chat app, let's use Chatkit's "who's online" feature to render a list of users and their real-time online status.
 
@@ -1181,7 +1180,7 @@ export default ChatScreen
 ```
 
 * With Chatkit you can always access a list of users and their online status with `currentRoom.users`
-* When users come online (`userCameOnline`) or go offline (`userWentOffline`) we call `forceUpdate` which makes React revaluate `currentRoom.users` and update the UI
+* When users come online (`userCameOnline`) or goes offline (`userWentOffline`) we call `forceUpdate` which makes React revaluate `currentRoom.users` and update the UI
 * We also need to call `forceUpdate` when new users join (`userJoined`)
 
 
@@ -1189,7 +1188,20 @@ Again it really boils down to wiring some simple data and events to React compon
 
 ## Conclusion
 
+TBD.
 
+
+Todo
+
+* [ ] Record some animations
+* [ ] Create some diagrams
+* [ ] Update demo app to use new lib
+* [ ] Then update tutorial to use new code
+* [ ] Follow tutorial from beginning to end
+
+Other
+
+* [ ] Need to mention the use of room ID somewhere
 
 
 
