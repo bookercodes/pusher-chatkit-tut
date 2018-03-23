@@ -374,10 +374,9 @@ export default ChatScreen
 
 Again, starting from the top:
 
-* First, we instantaite our Chatkit `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`
-* The `TokenProvider` points to the `/authenticate` route, which we defined earlier
-* Once `ChatManager` has been initialised, we can call `connect`
-* `connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you you missed something.
+* First, we import `Chatkit`
+* Then instantaite our Chatkit `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`. The `TokenProvider` points to the `/authenticate` route, which we defined earlier
+* Once `ChatManager` has been initialised, we can call `connect`. `connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you you missed something.
 
 ## Step 7. Create a Chatkit room
 
