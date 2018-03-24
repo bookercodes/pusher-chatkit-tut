@@ -116,7 +116,7 @@ app.use(cors())
 +})
 
 +app.post('/authenticate', (req, res) => {
-+  const grant_type = req.body.grant_type
++  const { grant_type } = req.body
 +  res.json(chatkit.authenticate({ grant_type }, req.query.user_id))
 +})
 
