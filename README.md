@@ -218,7 +218,7 @@ class App extends Component {
 +    })
 +      .then(response => {
 +        this.setState({
-+          userId: username
++          currentUsername: username
 +        })
 +      })
 +      .catch(error => console.error('error', error))
@@ -303,7 +303,7 @@ class App extends Component {
     })
       .then(response => {
         this.setState({
-          userId: username,
+          currentUsername: username,
 +         currentScreen: 'ChatScreen'
         })
       })
@@ -315,7 +315,7 @@ class App extends Component {
       return <UsernameForm onSubmit={this.onUsernameSubmitted} />
 +    }
 +    if (this.state.currentScreen === 'ChatScreen') {
-+      return <ChatScreen userId={this.state.userId} /> 
++      return <ChatScreen currentUsername={this.state.currentUsername} /> 
 +    }
   }
 }
@@ -348,7 +348,7 @@ class ChatScreen extends Component {
 +  componentDidMount () {
 +    const chatManager = new Chatkit.ChatManager({
 +      instanceLocator: 'YOUR INSTANCE LOCATOR',
-+      userId: this.props.userId,
++      userId: this.props.currentUsername,
 +      tokenProvider: new Chatkit.TokenProvider({
 +        url: 'http://localhost:3001/authenticate',
 +      }),
