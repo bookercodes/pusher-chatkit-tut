@@ -143,7 +143,7 @@ Boom 💥! That's all we need to do on the server. Let's move on to the client..
 
 ## Step 4. Login 
 
-When someone loads the app, we want to ask them who they are:
+When someone loads the app, we want to ask them who they are.
 
 Once they hit **Submit**, we'll send their username to the server (to the `/users` route we just defined) and create a a Chatkit user if one doesn't exist. 
 
@@ -225,7 +225,7 @@ class App extends Component {
 +  }
 
   render() {
--   return <h1>Chat</h1>
+-   return <h1>Chatly</h1>
 +   return <UsernameForm onSubmit={this.onUsernameSubmitted} />
   }
 }
@@ -233,7 +233,11 @@ class App extends Component {
 export default App
 ```
 
-Starting from the top,
+Run the application using `npm start` and you'll see that the screen is rendered:
+
+[Picture of the screen]
+
+Starting from the top of `App.js`:
 
 * First, we import the `UsernameForm` component. It probably looks familiar to you because it uses a common React pattern called controlled components. You can read more about controlled components and React forms [here](https://reactjs.org/docs/forms.html)
 * In the `render` function we - you guessed it - render the `UsernameForm` and hook up the `onUsernameSubmitted` event handler
