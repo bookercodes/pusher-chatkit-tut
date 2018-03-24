@@ -325,7 +325,7 @@ export default App
 
 ## Step 6. Connect to Chatkit
 
-Earlier, we installed `pusher-chatkit-server`. Now we're in client-land, you'll need to install [`pusher-chatkit-client`](https://www.npmjs.com/search?q=pusher-chatkit-client) as well:
+Earlier, we installed `pusher-chatkit-server`. Now we're in client-land, you'll need to install [`@pusher/chatkit`](https://www.npmjs.com/package/@pusher/chatkit) as well:
 
 ```
 npm install --save pusher-chatkit-client
@@ -335,7 +335,7 @@ Then update `ChatScreen.js`:
 
 ```diff
 import React, { Component } from 'react'
-+import Chatkit from 'pusher-chatkit-client'
++import Chatkit from '@pusher/chatkit'
 
 class ChatScreen extends Component {
 +  constructor(props) {
