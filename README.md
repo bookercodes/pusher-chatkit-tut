@@ -635,10 +635,6 @@ class ChatScreen extends Component {
         backgroundImage:
           'linear-gradient(to bottom, #437f86, #3e7a88, #3c7689, #3c7089, #3f6b88)',
       },
-+      chatList: {
-+        padding: 20,
-+        flex: 1,
-      },
     }
     return (
       <div style={styles.container}>
