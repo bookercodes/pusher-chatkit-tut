@@ -379,6 +379,8 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
+Remember to update YUR INSTANCE LOCATOR.
+
 Again, starting from the top:
 
 * First, we import `Chatkit`
