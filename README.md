@@ -79,7 +79,7 @@ We won't authenticate users in this tutorial, but we'll still need to define a r
 Start by installing [`pusher-chatkit-server`](https://www.npmjs.com/package/pusher-chatkit-server):
 
 ```
-npm install --save pusher-chatkit-sever
+npm install --save pusher-chatkit-server
 ```
 
 Then update `./server.js`:
