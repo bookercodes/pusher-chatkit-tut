@@ -1200,6 +1200,7 @@ Todo
 * [ ] Update demo app to use new lib
 * [ ] Then update tutorial to use new code
 * [ ] Follow tutorial from beginning to end
+* [ ] Create empty `components` directory in template
 
 Other
 
