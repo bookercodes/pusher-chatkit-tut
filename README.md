@@ -130,6 +130,8 @@ app.listen(PORT, err => {
 })
 ```
 
+Rememnber to update "YOUR INSTANCE LOCATOR" and "YOUR KEY" with your own values.
+
 There's a lot to unpack here, starting from the top:
 
 * First, we import `Chatkit` from `pusher-chatkit-server`
