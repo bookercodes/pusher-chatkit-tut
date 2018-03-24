@@ -384,7 +384,7 @@ Remember to update YUR INSTANCE LOCATOR.
 Again, starting from the top:
 
 * First, we import `Chatkit`
-* Then instantaite our Chatkit `ChatManager` with our `instanceLocator`, `userId` (from `this.props.userId`), and a custom `TokenProvider`. The `TokenProvider` points to the `/authenticate` route, which we defined earlier
+* Then instantaite our Chatkit `ChatManager` with our `instanceLocator`, `userId` (from `this.props.currentUsername`), and a custom `TokenProvider`. The `TokenProvider` points to the `/authenticate` route, which we defined earlier
 * Once `ChatManager` has been initialised, we can call `connect`. `connect` happens asynchronously and a [`Promise`](https://developers.google.com/web/fundamentals/primers/promises) is returned. If you have followed these steps exaclty, you will connect. That being said, watch out for any `console.error`s in case you you missed something.
 
 ## Step 7. Create a Chatkit room
@@ -491,6 +491,7 @@ class ChatScreen extends Component {
 
 export default ChatScreen
 ```
+^^ this needs updating to show some oclours and use padding in the correct place and add some placeholder text
 
 If you run the app now, you'll see the basic layout take place:
 
@@ -585,21 +586,21 @@ class ChatScreen extends Component {
       .connect()
       .then(currentUser => {
         this.setState({ currentUser })
-+        return currentUser.subscribeToRoom(
-+          5599364,
-+          {
-+            newMessage: message => {
++        return currentUser.subscribeToRoom({
++          roomId: YOUR ROOM ID,
++           messageLimit: 100,
++          hooks: {
++            onNewMessage: message => {
 +              this.setState({
 +                messages: [...this.state.messages, message],
 +              })
 +            },
 +          },
-+          100
-+        )
++        })
 +      })
 +      .then(currentRoom => {
 +        this.setState({ currentRoom })
-+      })
++       })
       .catch(error => console.error('error', error))
   }
 
@@ -662,6 +663,8 @@ class ChatScreen extends Component {
 export default ChatScreen
 
 ```
+
+Remember to update your room ID. with the room ID from the previous step 
 
 Let's break it down:
 
