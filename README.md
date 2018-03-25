@@ -1125,15 +1125,7 @@ class ChatScreen extends Component {
             },
 +            onUserCameOnline: () => this.forceUpdate(),
 +            onUserWentOffline: () => this.forceUpdate(),
-+            onUserJoined: user => {
-+              const currentRoom = this.state.currentUser.rooms.find(
-+                room => room.id === this.state.currentRoom.id
-+              )
-+              this.setState({
-+                currentRoom,
-+              })
-+              this.forceUpdate()
-+            },
++            onUserJoined: () => this.forceUpdate(),
 +          },
         })
       })
