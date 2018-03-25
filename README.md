@@ -558,10 +558,8 @@ Then update `ChatScreen.js`:
 ```diff
 import React, { Component } from 'react'
 import Chatkit from 'pusher-chatkit-client'
-import SendMessageForm from './components/SendMessageForm'
-import WhosOnlineList from './components/WhosOnlineList'
-import MessagesList from './components/MessagesList'
-import TypingIndicator from './components/TypingIndicator'
++import MessageList from './components/MessageList'
+
 
 class ChatScreen extends Component {
   constructor(props) {
@@ -645,7 +643,7 @@ class ChatScreen extends Component {
           <aside style={styles.whosOnlineListContainer}>
           </aside>
           <section style={styles.chatListContainer}>
-+            <MessagesList
++            <MessageList
 +              messages={this.state.messages}
 +              style={styles.chatList}
             />
@@ -698,7 +696,9 @@ Next, let's allow users to send messages by first creating a `SendMessageForm.js
 + 
 +   onChange(e) {
 +     this.setState({ text: e.target.value })
-+     this.props.onChange()
++     if (this.props.onChange) {
++       this.props.onChange()
++     }
 +   }
 + 
 +   render() {
@@ -746,8 +746,8 @@ Then  - you guessed it - update `ChatScreen.js`:
 ```diff
 import React, { Component } from 'react'
 import Chatkit from 'pusher-chatkit-client'
+import MessageList from './components/MessageList'
 + import SendMessageForm from './components/SendMessageForm'
-import MessagesList from './components/MessagesList'
 
 class ChatScreen extends Component {
   constructor(props) {
@@ -759,6 +759,14 @@ class ChatScreen extends Component {
     }
 +    this.sendMessage = this.sendMessage.bind(this)
   }
+
+ 
++  sendMessage(text) {
++    this.state.currentUser.sendMessage({
++      text,
++      roomId: this.state.currentRoom.id,
++    })
++  }
 
   componentDidMount () {
     const chatManager = new Chatkit.ChatManager({
@@ -790,13 +798,7 @@ class ChatScreen extends Component {
       })
       .catch(error => console.error('error', error))
   }
-  
-+  sendMessage(text) {
-+    this.state.currentUser.sendMessage({
-+      text,
-+      roomId: this.state.currentRoom.id,
-+    })
-+  }
+
 
   render() {
     const styles = {
@@ -811,13 +813,12 @@ class ChatScreen extends Component {
           <aside style={styles.whosOnlineListContainer}>
           </aside>
           <section style={styles.chatListContainer}>
-            <MessagesList
+            <MessageList
               messages={this.state.messages}
               style={styles.chatList}
             />
 +            <SendMessageForm
 +              onSubmit={this.sendMessage}
-+              onChange={this.sendTypingEvent}
 +            />
           </section>
         </div>
@@ -869,10 +870,11 @@ Then update `ChatScreen.js`:
 ```diff
 import React, { Component } from 'react'
 import Chatkit from 'pusher-chatkit-client'
-import SendMessageForm from './components/SendMessageForm'
 import WhosOnlineList from './components/WhosOnlineList'
+import SendMessageForm from './components/SendMessageForm'
 import MessagesList from './components/MessagesList'
-import TypingIndicator from './components/TypingIndicator'
+import SendMessageForm from './components/SendMessageForm'
++ import TypingIndicator from './components/TypingIndicator'
 
 class ChatScreen extends Component {
   constructor(props) {
@@ -881,16 +883,29 @@ class ChatScreen extends Component {
       currentUser: {},
       currentRoom: {},
       messages: [],
-+      usersWhoAreTyping: [],
++     usersWhoAreTyping: [],
     }
     this.sendMessage = this.sendMessage.bind(this)
-+    this.sendTypingEvent = this.sendTypingEvent.bind(this)
++   this.sendTypingEvent = this.sendTypingEvent.bind(this)
   }
 
-  componentDidMount () {
++  sendTypingEvent() {
++    this.state.currentUser
++      .isTypingIn({ roomId: this.state.currentRoom.id })
++      .catch(error => console.error('error', error))
++  }
+
+  sendMessage(text) {
+    this.state.currentUser.sendMessage({
+      text,
+      roomId: this.state.currentRoom.id,
+    })
+  }
+
+  componentDidMount() {
     const chatManager = new Chatkit.ChatManager({
       instanceLocator: 'YOUR INSTANCE LOCATOR',
-      userId: this.props.userId,
+      userId: this.props.currentUsername,
       tokenProvider: new Chatkit.TokenProvider({
         url: 'http://localhost:3001/authenticate',
       }),
@@ -900,20 +915,21 @@ class ChatScreen extends Component {
       .connect()
       .then(currentUser => {
         this.setState({ currentUser })
-        return currentUser.subscribeToRoom(
-          5599364,
-          {
-            newMessage: message => {
+        return currentUser.subscribeToRoom({
+          roomId: YOUR ROOM ID,
+          messageLimit: 100,
+          hooks: {
+            onNewMessage: message => {
               this.setState({
                 messages: [...this.state.messages, message],
               })
             },
-+            userStartedTyping: user => {
++            onUserStartedTyping: user => {
 +              this.setState({
 +                usersWhoAreTyping: [...this.state.usersWhoAreTyping, user.name],
-+              })
++             })
 +            },
-+            userStoppedTyping: user => {
++            onUserStoppedTyping: user => {
 +              this.setState({
 +                usersWhoAreTyping: this.state.usersWhoAreTyping.filter(
 +                  username => username !== user.name
@@ -921,8 +937,7 @@ class ChatScreen extends Component {
 +              })
 +            },
           },
-          100
-        )
+        })
       })
       .then(currentRoom => {
         this.setState({ currentRoom })
@@ -930,18 +945,7 @@ class ChatScreen extends Component {
       .catch(error => console.error('error', error))
   }
 
-  sendMessage(text) {
-    this.state.currentUser.sendMessage({
-      text,
-      roomId: this.state.currentRoom.id,
-    })
-  }
 
-+  sendTypingEvent() {
-+    this.state.currentUser
-+      .isTypingIn(this.state.currentRoom.id)
-+      .catch(error => console.error('error', error))
-+  }
 
   render() {
     const styles = {
@@ -967,7 +971,7 @@ class ChatScreen extends Component {
 +            <TypingIndicator usersWhoAreTyping={this.state.usersWhoAreTyping} />
             <SendMessageForm
               onSubmit={this.sendMessage}
-              onChange={this.sendTypingEvent}
++              onChange={this.sendTypingEvent}
             />
           </section>
         </div>
@@ -1066,10 +1070,12 @@ Then - for the last time - update `ChatScreen.js`:
 
 
 ```diff
+import React, { Component } from 'react'
+import Chatkit from '@pusher/chatkit'
 import SendMessageForm from './components/SendMessageForm'
-+import WhosOnlineList from './components/WhosOnlineList'
 import MessagesList from './components/MessagesList'
 import TypingIndicator from './components/TypingIndicator'
++import WhosOnlineList from './components/WhosOnlineList'
 
 class ChatScreen extends Component {
   constructor(props) {
@@ -1083,8 +1089,7 @@ class ChatScreen extends Component {
     this.sendMessage = this.sendMessage.bind(this)
     this.sendTypingEvent = this.sendTypingEvent.bind(this)
   }
-
-  comonentDidMount () {
+  comonentDidMount() {
     const chatManager = new Chatkit.ChatManager({
       instanceLocator: 'YOUR INSTANCE LOCATOR',
       userId: this.props.userId,
@@ -1097,9 +1102,10 @@ class ChatScreen extends Component {
       .connect()
       .then(currentUser => {
         this.setState({ currentUser })
-        return currentUser.subscribeToRoom(
-          5599364,
-          {
+        return currentUser.subscribeToRoom({
+          roomId: YOUR ROOM ID,
+          messageLimit: 100,
+          hooks: {
             newMessage: message => {
               this.setState({
                 messages: [...this.state.messages, message],
@@ -1117,9 +1123,9 @@ class ChatScreen extends Component {
                 ),
               })
             },
-+            userCameOnline: () => this.forceUpdate(),
-+            userWentOffline: () => this.forceUpdate(),
-+            userJoined: user => {
++            onUserCameOnline: () => this.forceUpdate(),
++            onUserWentOffline: () => this.forceUpdate(),
++            onUserJoined: user => {
 +              const currentRoom = this.state.currentUser.rooms.find(
 +                room => room.id === this.state.currentRoom.id
 +              )
@@ -1128,15 +1134,15 @@ class ChatScreen extends Component {
 +              })
 +              this.forceUpdate()
 +            },
-          },
-          100
-        )
++          },
+        })
       })
       .then(currentRoom => {
         this.setState({ currentRoom })
       })
       .catch(error => console.error('error', error))
   }
+
 
   sendMessage(text) {
     this.state.currentUser.sendMessage({
