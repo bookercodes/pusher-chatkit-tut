@@ -9,11 +9,11 @@ When we're done, we'll have a chat application complete with **typing indicators
 
 If you think this sounds like a lot to tackle in one tutorial, you would normally be right! 
 
-However, because we'll use [Chatkit](pusher.com/chatkit), we can more or less focus exclusively on the front-end React code while Chatkit does the heavy lifting.
+However, because we'll be using [Chatkit](pusher.com/chatkit), we can more or less focus exclusively on the front-end React code while Chatkit does the heavy lifting.
 
 ## Good to know
 
-Before delving into this walkthrough, it would be good to have a basic understanding of [React](https://reactjs.org/tutorial/tutorial.html)
+Before diving into this walkthrough, it would be good to have a basic understanding of [React](https://reactjs.org/tutorial/tutorial.html)
 
 
 ## What is Chatkit?
@@ -43,7 +43,7 @@ Rather than start from absoloute scratch, this walkthrough is based on a minimal
 
 ![](https://github.com/bookercodes/pusher-chatkit-tut/blob/master/Screen%20Shot%202018-03-20%20at%2015.12.08.png?raw=true)
 
-As you will see, the starter termplate doesn't contain any interesting logic, just boilerplate we need to run a React application and a simple Node server. 
+As you will see, the starter template doesn't contain any interesting logic, just boilerplate we need to run a React application and a simple Node server. 
 
 > **"Sever? No one mentioned a server!"** If you're not too familiar with [Node](https://nodejs.org/en/), don't worry 😊. After the next section, we won't really touch the server.
 
@@ -130,7 +130,7 @@ app.listen(PORT, err => {
 })
 ```
 
-Rememnber to update "YOUR INSTANCE LOCATOR" and "YOUR KEY" with your own values.
+Remember to update **"YOUR INSTANCE LOCATOR"** and **"YOUR KEY"** with your own values.
 
 There's a lot to unpack here, starting from the top:
 
@@ -235,7 +235,7 @@ export default App
 
 Run the application using `npm start` and you'll see that the screen is rendered:
 
-[Picture of the screen]
+![](https://github.com/bookercodes/pusher-chatkit-tut/blob/master/Screen%20Shot%202018-03-)
 
 Starting from the top of `App.js`:
 
@@ -248,7 +248,7 @@ Starting from the top of `App.js`:
 
 At the moment, we render the `UsernameForm` and it occupies the entire screen:
 
-[Animation highlighting the screen]
+![](https://github.com/bookercodes/pusher-chatkit-tut/blob/master/Screen.gif?raw=true)
 
 Once the username has been submitted, we'll want to transition to a different screen - namely, the chat screen.
 
@@ -379,7 +379,7 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-Remember to update YUR INSTANCE LOCATOR.
+Remember to update **"YOUR INSTANCE LOCATOR"**.
 
 Again, starting from the top:
 
@@ -395,17 +395,19 @@ Rooms can be created programatically (on the sever or client using `createRoom`)
 
 Creating rooms from the Inspector isn't really a good practice (it's mainly intended for testing) but for the purpose of this walkthrough, we'll do it anyway.
 
-In the dashboard, head to the **Inspector** tab and create a user with any name. I will call mine "Admin":
+In the dashboard, head to the **Inspector** tab and create a user with any name. I will call mine "Admin".
 
 Then, create a room called "General":
 
-It is really important to note the unique **room ID** highlighted above. 
+![](https://github.com/bookercodes/pusher-chatkit-tut/blob/master/Screen%20Shot%202018-03-26%20at%2011.33.34.png?raw=true)
+
+It is really important to note the unique **Room id** highlighted above. 
 
 ## Step 8. Component structure
 
 This step marks a significant point in the walkthrough. 
 
-Now we have our "boilerplate" in place (including a Chakit connection), we can rapidly start to build out chat features. 
+Now we have our boilerplate in place, we can rapidly start to build out chat features. 
 
 Going forward, we'll break down each feature into indepdendant (reusable, if you want!) React components:
 
@@ -658,7 +660,7 @@ export default ChatScreen
 
 ```
 
-Remember to update your room ID. with the room ID from the previous step 
+Remember to update **YOUR ROOM ID** with your own room ID from the previous step.
 
 Let's break it down:
 
@@ -840,7 +842,7 @@ Hopefully you can start to see a pattern emerge. Our `ChatScreen` container mana
 
 If you've ever tired to implement your own typing indicators you'll know it can be tricky. In general, more real-time features means more data and more connections to manage. 
 
-With Chatkit, you can add typing indicators with two fundamental lines of code. 
+With Chatkit, you can add typing indicators with little effort.
 
 Start by creating a  `TypingIndicator.js` component in `/src/components`:
 
@@ -983,14 +985,14 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-* Like I mentioned, typing indicators boil down to two fundamental actions: Calling `currentUser.userIsTyping` when the current user starts typing (normally `onChange`), and then listening to `userStartedTyping` and `userStoppedTyping` events
-* You don't have to tell Chatkit when when someone stops typing by design. If Chatkit doesn't receive a `userIsTyping` event after a few seconds, it assumes the user has stopped typing. In practice, it's really slick 
-* It's also worth noting that `userStartedTyping` and `userStoppedTyping` events are never fired for the current user who's typing by design. If you want to test the typing indicators, you'll need to open two windows side by side
+* Typing indicators boil down to two fundamental actions: Calling `currentUser.userIsTyping` when the current user starts typing (normally `onChange`), and then listening to `userStartedTyping` and `userStoppedTyping` events
+* You don't have to tell Chatkit when when someone stops typing and this is by design. If Chatkit doesn't receive a `userIsTyping` event after a few seconds, it assumes the user has stopped typing. In practice, it's really slick...
+* It's also worth noting that `userStartedTyping` and `userStoppedTyping` events are never fired for the _current user_  - this is also by design. If your username is "John" and you start typing you'll never see "John is typing" but other users will
 
 
 ## Step 10. Who's online 
 
-Can you feel the momentum? We're on a roll 🙌!
+Can you feel the momentum? Almost done now 🙌
 
 To finish up the chat app, let's use Chatkit's "who's online" feature to render a list of users and their real-time online status.
 
@@ -1185,7 +1187,7 @@ class ChatScreen extends Component {
 export default ChatScreen
 ```
 
-* With Chatkit you can always access a list of users and their online status with `currentRoom.users`
+* With Chatkit you can always access a list of users and their online status with `currentRoom.users`. We manage all that state for you
 * When users come online (`userCameOnline`) or goes offline (`userWentOffline`) we call `forceUpdate` which makes React revaluate `currentRoom.users` and update the UI
 * We also need to call `forceUpdate` when new users join (`userJoined`)
 
