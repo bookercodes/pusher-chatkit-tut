@@ -43,7 +43,7 @@ Rather than start from absoloute scratch, this walkthrough is based on a minimal
 
 ![](https://github.com/bookercodes/pusher-chatkit-tut/blob/master/Screen%20Shot%202018-03-20%20at%2015.12.08.png?raw=true)
 
-As you will see, the starter template doesn't contain any interesting logic, just boilerplate we need to run a React application and a simple Node server. 
+As you will see, the starter template doesn't contain any interesting logic - just boilerplate we need to run a React application and a simple Node server. 
 
 > **"Sever? No one mentioned a server!"** If you're not too familiar with [Node](https://nodejs.org/en/), don't worry 😊. After the next section, we won't really touch the server.
 
@@ -61,7 +61,7 @@ npm install
 
 Now you've downloaded the starter template, let's create a Chatkit instance.
 
-To create your own Chatkit instance, head to the dashboard, hit **Create new** then give your instance a name. I will call mine “React Chat Tutorial”:
+To create your own Chatkit instance, [head to the dashboard](dash.pusher.com), hit **Create new** then give your instance a name. I will call mine “React Chat Tutorial”:
 
 ![](https://github.com/bookercodes/pusher-chatkit-tut/blob/master/Screen%20Shot%202018-03-20%20at%2016.22.17.png?raw=true)
 
@@ -200,13 +200,13 @@ import React, { Component } from 'react'
 +import UsernameForm from './components/UsernameForm'
 
 class App extends Component {
-  constructor() {
-    super()
++  constructor() {
++    super()
 +    this.state = {
 +      currentUsername: '',
 +    }
 +    this.onUsernameSubmitted = this.onUsernameSubmitted.bind(this)
-  }
++  }
 
 +  onUsernameSubmitted(username) {
 +    fetch('http://localhost:3001/users', {
@@ -260,13 +260,8 @@ To do that, we first need to create a `ChatsScreen.js` component in `./src`:
 +
 +class ChatScreen extends Component {  
 +  render() {
-+    const styles = {
-+      container: {
-+        display: 'flex'
-+      }
-+    }
 +    return (
-+      <div style={styles.container}>
++      <div>
 +        <h1>Chat</h1>
 +      </div>
 +    )
@@ -328,7 +323,7 @@ export default App
 Earlier, we installed `pusher-chatkit-server`. Now we're in client-land, you'll need to install [`@pusher/chatkit`](https://www.npmjs.com/package/@pusher/chatkit) as well:
 
 ```
-npm install --save pusher-chatkit-client
+npm install --save @pusher/chatkit
 ```
 
 Then update `ChatScreen.js`:
@@ -363,13 +358,8 @@ class ChatScreen extends Component {
 +  }
 
   render() {
-    const styles = {
-      container: {
-        display: 'flex'
-      }
-    }
     return (
-      <div style={styles.container}>
+      <div>
         <h1>Chat</h1>
       </div>
     )
@@ -417,7 +407,7 @@ We will create each component as we go along but to make the tutorial a bit easi
 
 ```diff
 import React, { Component } from 'react'
-import Chatkit from 'pusher-chatkit-client''
+import Chatkit from '@pusher/chatkit'
 
 class ChatScreen extends Component {
   constructor(props) {
@@ -430,7 +420,7 @@ class ChatScreen extends Component {
   componentDidMount () {
     const chatManager = new Chatkit.ChatManager({
       instanceLocator: 'YOUR INSTANCE LOCATOR',
-      userId: this.props.userId,
+      userId: this.props.currentUsername,
       tokenProvider: new Chatkit.TokenProvider({
         url: 'http://localhost:3001/authenticate',
       }),
@@ -445,15 +435,16 @@ class ChatScreen extends Component {
   }
   
   render() {
+-    return (
+-      <div>
+-        <h1>Chat</h1>
+-      </div>
+-    )
 +    const styles = {
 +      container: {
 +        height: '100vh',
 +        display: 'flex',
 +        flexDirection: 'column',
-+        color: 'white',
-+      },
-+      header: {
-+        padding: 20,
 +      },
 +      chatContainer: {
 +        display: 'flex',
@@ -462,28 +453,25 @@ class ChatScreen extends Component {
 +      whosOnlineListContainer: {
 +        width: '15%',
 +        padding: 20,
++        backgroundColor: '#2c303b',
++        color: 'white',
 +      },
 +      chatListContainer: {
++        padding: 20,
 +        width: '85%',
 +        display: 'flex',
 +        flexDirection: 'column',
 +      },
-+      chatList: {
-+        padding: 20,
-+        flex: 1,
-+      },
-+    }
++   }
+
 +    return (
 +      <div style={styles.container}>
-+        <header style={styles.header}>
-+          <h2>Chatly</h2>
-+        </header>
 +        <div style={styles.chatContainer}>
 +          <aside style={styles.whosOnlineListContainer}>
-+
++            <h2>Who's online PLACEHOLDER</h2>
 +          </aside>
 +          <section style={styles.chatListContainer}>
-+          
++            <h2>Chat PLACEHOLDER</h2>         
 +          </section>
 +        </div>
 +      </div>
@@ -493,12 +481,12 @@ class ChatScreen extends Component {
 
 export default ChatScreen
 ```
-^^ this needs updating to show some oclours and use padding in the correct place and add some placeholder text
 
 If you run the app now, you'll see the basic layout take place:
 
+![](https://github.com/bookercodes/pusher-chatkit-tut/blob/master/Screen%20Shot%202018-03-26%20at%2012.32.47.png?raw=true)
 
-Awesome.
+Awesome!
 
 ## Step 9. Subscribe to messages
 
@@ -517,6 +505,7 @@ First, create a stateless `MessageList.js` component in `/src/components`:
 +     const styles = {
 +       container: {
 +         overflowY: 'scroll',
++         flex: 1,
 +       },
 +       ul: {
 +         listStyle: 'none',
@@ -559,7 +548,7 @@ Then update `ChatScreen.js`:
 
 ```diff
 import React, { Component } from 'react'
-import Chatkit from 'pusher-chatkit-client'
+import Chatkit from '@pusher/chatkit'
 +import MessageList from './components/MessageList'
 
 
@@ -568,15 +557,15 @@ class ChatScreen extends Component {
     super(props)
     this.state = {
       currentUser: {},
-+      currentRoom: {},
-+      messages: []
++     currentRoom: {},
++     messages: []
     }
   }
 
   componentDidMount () {
     const chatManager = new Chatkit.ChatManager({
       instanceLocator: 'YOUR INSTANCE LOCATOR',
-      userId: this.props.userId,
+      userId: this.props.currentUsername,
       tokenProvider: new Chatkit.TokenProvider({
         url: 'http://localhost:3001/authenticate',
       }),
@@ -588,7 +577,7 @@ class ChatScreen extends Component {
         this.setState({ currentUser })
 +        return currentUser.subscribeToRoom({
 +          roomId: YOUR ROOM ID,
-+           messageLimit: 100,
++          messageLimit: 100,
 +          hooks: {
 +            onNewMessage: message => {
 +              this.setState({
@@ -606,49 +595,20 @@ class ChatScreen extends Component {
 
   render() {
     const styles = {
-      container: {
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        color: 'white',
-      },
-      header: {
-        backgroundImage:
-          'linear-gradient(to right, #2e646d, #2e646d, #2e646d, #2e646d, #2e646d)',
-        padding: 20,
-      },
-      chatContainer: {
-        display: 'flex',
-        flex: 1,
-      },
-      whosOnlineListContainer: {
-        width: '15%',
-        backgroundColor: '#2b303b',
-        backgroundImage:
-          'linear-gradient(to bottom, #336f78, #2d6a79, #296579, #296079, #2b5a78)',
-        padding: 20,
-      },
-      chatListContainer: {
-        width: '85%',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundImage:
-          'linear-gradient(to bottom, #437f86, #3e7a88, #3c7689, #3c7089, #3f6b88)',
-      },
+      ...
     }
     return (
       <div style={styles.container}>
-        <header style={styles.header}>
-          <h2>Chatly</h2>
-        </header>
         <div style={styles.chatContainer}>
           <aside style={styles.whosOnlineListContainer}>
+			<h2>Who's online PLACEHOLDER</h2>
           </aside>
           <section style={styles.chatListContainer}>
+-            <h2>Chat PLACEHOLDER</h2>
 +            <MessageList
 +              messages={this.state.messages}
 +              style={styles.chatList}
-            />
++            />
           </section>
         </div>
       </div>
@@ -747,7 +707,7 @@ Then  - you guessed it - update `ChatScreen.js`:
 
 ```diff
 import React, { Component } from 'react'
-import Chatkit from 'pusher-chatkit-client'
+import Chatkit from '@pusher/chatkit'
 import MessageList from './components/MessageList'
 + import SendMessageForm from './components/SendMessageForm'
 
@@ -770,10 +730,10 @@ class ChatScreen extends Component {
 +    })
 +  }
 
-  componentDidMount () {
+ componentDidMount () {
     const chatManager = new Chatkit.ChatManager({
       instanceLocator: 'YOUR INSTANCE LOCATOR',
-      userId: this.props.userId,
+      userId: this.props.currentUsername,
       tokenProvider: new Chatkit.TokenProvider({
         url: 'http://localhost:3001/authenticate',
       }),
@@ -783,21 +743,21 @@ class ChatScreen extends Component {
       .connect()
       .then(currentUser => {
         this.setState({ currentUser })
-        return currentUser.subscribeToRoom(
-          5599364,
-          {
-            newMessage: message => {
+        return currentUser.subscribeToRoom({
+          roomId: YOUR ROOM ID,
+          messageLimit: 100,
+          hooks: {
+            onNewMessage: message => {
               this.setState({
                 messages: [...this.state.messages, message],
               })
             },
           },
-          100
-        )
+        })
       })
       .then(currentRoom => {
         this.setState({ currentRoom })
-      })
+       })
       .catch(error => console.error('error', error))
   }
 
@@ -808,20 +768,16 @@ class ChatScreen extends Component {
     }
     return (
       <div style={styles.container}>
-        <header style={styles.header}>
-          <h2>Chatly</h2>
-        </header>
         <div style={styles.chatContainer}>
           <aside style={styles.whosOnlineListContainer}>
+			<h2>Who's online PLACEHOLDER</h2>
           </aside>
           <section style={styles.chatListContainer}>
             <MessageList
               messages={this.state.messages}
               style={styles.chatList}
             />
-+            <SendMessageForm
-+              onSubmit={this.sendMessage}
-+            />
++           <SendMessageForm onSubmit={this.sendMessage} />
           </section>
         </div>
       </div>
@@ -871,12 +827,10 @@ Then update `ChatScreen.js`:
 
 ```diff
 import React, { Component } from 'react'
-import Chatkit from 'pusher-chatkit-client'
-import WhosOnlineList from './components/WhosOnlineList'
+import Chatkit from '@pusher/chatkit'
+import MessageList from './components/MessageList'
 import SendMessageForm from './components/SendMessageForm'
-import MessagesList from './components/MessagesList'
-import SendMessageForm from './components/SendMessageForm'
-+ import TypingIndicator from './components/TypingIndicator'
++import TypingIndicator from './components/TypingIndicator'
 
 class ChatScreen extends Component {
   constructor(props) {
@@ -954,26 +908,20 @@ class ChatScreen extends Component {
       ...
     }
     return (
-      <div style={styles.container}>
-        <header style={styles.header}>
-          <h2>Chatly</h2>
-        </header>
+      <div style={styles.container}>>
         <div style={styles.chatContainer}>
           <aside style={styles.whosOnlineListContainer}>
-            <WhosOnlineList
-              currentUser={this.state.currentUser}
-              users={this.state.currentRoom.users}
-            />
+            <h2>Who's online PLACEHOLDER</h2>
           </aside>
           <section style={styles.chatListContainer}>
-            <MessagesList
+            <MessageList
               messages={this.state.messages}
               style={styles.chatList}
             />
-+            <TypingIndicator usersWhoAreTyping={this.state.usersWhoAreTyping} />
++           <TypingIndicator usersWhoAreTyping={this.state.usersWhoAreTyping} />
             <SendMessageForm
               onSubmit={this.sendMessage}
-+              onChange={this.sendTypingEvent}
++             onChange={this.sendTypingEvent}
             />
           </section>
         </div>
@@ -1001,7 +949,38 @@ Start by creating a `WhosOnlineList.js` component in `/src/components`:
 ```diff
 import React, { Component } from 'react'
 
-class Item extends Component {
+class WhosOnlineList extends Component {
+  renderUsers() {
+    return (
+      <ul>
+        {this.props.users.map((user, index) => {
+          if (user.id === this.props.currentUser.id) {
+            return (
+              <WhosOnlineListItem key={index} presenceState="online">
+                {user.name} (You)
+              </WhosOnlineListItem>
+            )
+          }
+          return (
+            <WhosOnlineListItem key={index} presenceState={user.presence.state}>
+              {user.name}
+            </WhosOnlineListItem>
+          )
+        })}
+      </ul>
+    )
+  }
+
+  render() {
+    if (this.props.users) {
+      return this.renderUsers()
+    } else {
+      return <p>Loading...</p>
+    }
+  }
+}
+
+class WhosOnlineListItem extends Component {
   render() {
     const styles = {
       li: {
@@ -1025,43 +1004,12 @@ class Item extends Component {
           style={{
             ...styles.div,
             backgroundColor:
-              this.props.presenceState === 'online' ? '#00F469' : '#4c758f',
+              this.props.presenceState === 'online' ? '#539eff' : '#414756',
           }}
         />
         {this.props.children}
       </li>
     )
-  }
-}
-
-class WhosOnlineList extends Component {
-  renderUsers() {
-    return (
-      <ul>
-        {this.props.users.map((user, index) => {
-          if (user.id === this.props.currentUser.id) {
-            return (
-              <Item key={index} presenceState="online">
-                {user.name} (You)
-              </Item>
-            )
-          }
-          return (
-            <Item key={index} presenceState={user.presence.state}>
-              {user.name}
-            </Item>
-          )
-        })}
-      </ul>
-    )
-  }
-
-  render() {
-    if (this.props.users) {
-      return this.renderUsers()
-    } else {
-      return <p>Loading...</p>
-    }
   }
 }
 
@@ -1074,8 +1022,8 @@ Then - for the last time - update `ChatScreen.js`:
 ```diff
 import React, { Component } from 'react'
 import Chatkit from '@pusher/chatkit'
+import MessageList from './components/MessageList'
 import SendMessageForm from './components/SendMessageForm'
-import MessagesList from './components/MessagesList'
 import TypingIndicator from './components/TypingIndicator'
 +import WhosOnlineList from './components/WhosOnlineList'
 
@@ -1091,10 +1039,24 @@ class ChatScreen extends Component {
     this.sendMessage = this.sendMessage.bind(this)
     this.sendTypingEvent = this.sendTypingEvent.bind(this)
   }
+  
+  sendTypingEvent() {
+    this.state.currentUser
+      .isTypingIn(this.state.currentRoom.id)
+      .catch(error => console.error('error', error))
+  }
+  
+   sendMessage(text) {
+    this.state.currentUser.sendMessage({
+      text,
+      roomId: this.state.currentRoom.id,
+    })
+  }
+  
   comonentDidMount() {
     const chatManager = new Chatkit.ChatManager({
       instanceLocator: 'YOUR INSTANCE LOCATOR',
-      userId: this.props.userId,
+      userId: this.props.currentUsername,
       tokenProvider: new Chatkit.TokenProvider({
         url: 'http://localhost:3001/authenticate',
       }),
@@ -1138,18 +1100,7 @@ class ChatScreen extends Component {
   }
 
 
-  sendMessage(text) {
-    this.state.currentUser.sendMessage({
-      text,
-      roomId: this.state.currentRoom.id,
-    })
-  }
 
-  sendTypingEvent() {
-    this.state.currentUser
-      .isTypingIn(this.state.currentRoom.id)
-      .catch(error => console.error('error', error))
-  }
 
   render() {
     const styles = {
@@ -1162,13 +1113,14 @@ class ChatScreen extends Component {
         </header>
         <div style={styles.chatContainer}>
           <aside style={styles.whosOnlineListContainer}>
+-            <h2>Who's online PLACEHOLDER</h2>
 +            <WhosOnlineList
 +              currentUser={this.state.currentUser}
 +              users={this.state.currentRoom.users}
 +            />
           </aside>
           <section style={styles.chatListContainer}>
-            <MessagesList
+            <MessageList
               messages={this.state.messages}
               style={styles.chatList}
             />
